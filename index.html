@@ -1,0 +1,4359 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+  <head>
+    <!-- <script type="text/javascript" src="https://livejs.com/live.js"></script> -->
+    <!-- <meta http-equiv="refresh" content="5" /> -->
+
+    <script>
+      function maxStockProfit(pricesArray) {
+        // take in an array of prices
+        // return the max possible profit of the day
+        // return -1 if profit is not possible
+        // You will only be able to purchase once and sell once through the days
+
+        let maxStockProfit = -1;
+        let buyPrice = 0;
+        let sellPrice = 0;
+        let changeBuyPrice = true;
+        console.log(pricesArray);
+
+        for (i = 0; i < pricesArray.length; i++) {
+          console.log('checking buying at ', pricesArray[i]);
+          if (changeBuyPrice) buyPrice = pricesArray[i];
+          sellPrice = pricesArray[i + 1];
+
+          console.log('check selling at', pricesArray[i + 1]);
+          if (sellPrice < buyPrice) {
+            // losing money
+            console.log(
+              'if sell price: ',
+              sellPrice,
+              ' < buyprice ',
+              buyPrice,
+              ' we activate changing buy price '
+            );
+            changeBuyPrice = true;
+          } else {
+            // making money or breaking even
+            let tempProfit = sellPrice - buyPrice;
+            if (tempProfit > maxStockProfit) maxStockProfit = tempProfit;
+            changeBuyPrice = false;
+            console.log(
+              'new max found',
+              'buy: ',
+              buyPrice,
+              'sell: ',
+              sellPrice,
+              'max: ',
+              maxStockProfit
+            );
+          }
+        }
+
+        return maxStockProfit;
+        // console.log('checking purchase at index ', i);
+        // for (j = 1; j < pricesArray.length; j++) {
+        //   if (j > i) {
+        //     console.log('checking sale at index ', j);
+        //     let x = pricesArray[j] - pricesArray[i];
+        //     if (x > maxStockProfit) {
+        //       console.log(
+        //         'new max found buying at ',
+        //         pricesArray[i],
+        //         ' and selling at ',
+        //         pricesArray[j],
+        //         ' for a new profit of ',
+        //         x
+        //       );
+        //       maxStockProfit = x;
+
+        // }
+        //   }
+        // }
+        // }
+      }
+
+      console.log('(22) => ', maxStockProfit([32, 46, 26, 38, 40, 48, 42]));
+      // console.log('(12) => ', maxStockProfit([10, 18, 4, 5, 9, 6, 16, 12]));
+
+      // function bubbleSort(array) {
+      //   // take in an array of numbers, and return that array of numbers sorted
+      //   // considerations - try to optimize by only sorting the number of times needed
+      //   // use a bubble up method
+      //   // consider recursive function options
+      //   let totalIterations = array.length;
+      //   for (let i = 0; i < totalIterations; i++) {
+      //     for (let a = 0; a < array.length - i; a++) {
+      //       if (array[a] > array[a + 1]) {
+      //         let b = array[a];
+      //         array[a] = array[a + 1];
+      //         array[a + 1] = b;
+      //       }
+      //     }
+      //   }
+
+      //   return array;
+      // }
+      // // console.log(bubbleSort([5, 3]));
+      // // console.log(bubbleSort([5, 3, 8, 2]));
+      // console.log(bubbleSort([5, 3, 8, 2, 1, 4]));
+
+      // function mergeSort(array1, array2) {
+      //   // sort the 2 arrays provided as efficiently as possible while merging them into a new array
+      //   let sorted = [];
+      //   let totalIterations = array1.length + array2.length;
+      //   for (let a = 0; a < totalIterations; a++) {
+      //     if (array1[0] < array2[0] || array2.length === 0) {
+      //       let x = array1.shift();
+      //       sorted.push(x);
+      //     } else {
+      //       let x = array2.shift();
+      //       sorted.push(x);
+      //     }
+      //   }
+      //   return sorted;
+      // }
+
+      // console.log(mergeSort([1, 2, 3, 6, 18, 2999], [4, 5, 77, 88, 1000]));
+
+      // Interview Challenge!
+      // you have an index 0, and each step you will increment that index, so step 1 it will increment by 1 and therefore be at position 1.  Step 2 it will increment by 2 and therefore be at position 4.
+      // you can also skip taking the first step alternatively in another scenario, scenario 2.
+      // and there is a certain index which is bad, and if you are going to land on that index you will just not move, instead of landing on it or skipping over it.
+      // so the problem is, sort out, between these two scenarios, what the highest index is you could reach.
+
+      // function runTheChallenge(steps, badIndex) {
+      //   let i = 0;
+      //   let z = 0;
+      //   for (let step = 1; step <= steps; step++) {
+      //     if (i + step !== badIndex) i = i + step;
+      //     if (step !== 1 && z + step !== badIndex) z = z + step;
+      //   }
+      //   if (i > z) return i;
+      //   else return z;
+      // }
+
+      // // TESTS
+      // // console.log('( 9 ) => ', runTheChallenge(4, 6));
+      // console.log('( 3 ) Return => ', runTheChallenge(2, 2));
+      // // console.log('( 819 ) => ', runTheChallenge(40, 10)); // should return 819
+      // // console.log('( 5 ) => ', runTheChallenge(3, 3));
+
+      // function militaryClock(s) {
+      //   // console.log(s);
+      //   // Assumptions: Starting String is a valid time in 12-hour AM/PM format.
+      //   // Assumptions: Military time has no PM, all pm is just shifted by 12 hours.
+      //   // Assumptions: Military time has no 12:00AM or 24:00, instead its reads as 00:00.
+      //   // Complete the timeConversion function in the editor below. It should return a new string representing the input time in 24 hour format.
+      //   let pm = false;
+      //   if (s.search('PM') !== -1) {
+      //     pm = true;
+      //   }
+      //   let x = s.slice(0, -2);
+      //   let array = x.split(':');
+      //   let hrs = Number(array[0]);
+      //   if ((!pm && hrs === 12) || (pm && hrs !== 12)) hrs = hrs + 12;
+      //   if (hrs === 24) hrs = 0;
+      //   array[0] = hrs;
+      //   let time = array.join(':');
+      //   return time;
+      // }
+      // console.log(militaryClock('07:05:45PM')); // returns '19:05:45'
+      // console.log(militaryClock('12:40:22AM')); // return '00:40:22'.
+      // console.log(militaryClock('12:00:00PM')); // return '12:00:00'.
+      // console.log(militaryClock('12:45:54PM')); // return '12:45:54'.
+
+      // Given a list of integers, count and return the number of times each value appears as an array of integers.
+
+      // frequencyArray = (array) => {
+      //   let hash = [];
+      //   for (let i = 0; i < 100; i++) {
+      //     hash[i] = 0;
+      //   }
+      //   for (let a in array) {
+      //     hash[array[a]]++;
+      //   }
+      //   return hash;
+      // };
+
+      // frequencyArray([1, 1, 1, 2, 3]);
+
+      // Given a square matrix, calculate the absolute difference between the sums of its diagonals.
+      // absolute diff is the space between the two values disregarding whether they are positive or negative, or the diff of their absolute values
+      // function diagonalDifference(array) {
+      //   let firstDiag = 0;
+      //   let secondDiag = 0;
+
+      //   // calculate the length
+      //   let length = array.length;
+      //   let iterations = length - 1;
+
+      //   for (let a = 0; a < array.length; a++) {
+      //     firstDiag += array[a][a];
+      //   }
+      //   console.log('first diag total: ', firstDiag);
+      //   console.log('array length: ', array.length);
+      //   for (let a = 0; a < array.length; a++) {
+      //     console.log('checking index ', a, ' and ', iterations - a);
+      //     secondDiag += array[a][iterations - a];
+      //   }
+      //   console.log('2nd diag total: ', secondDiag);
+      //   let diff = firstDiag - secondDiag;
+      //   let absolutDiff = Math.abs(diff);
+      //   return absolutDiff;
+      // }
+
+      // console.log(
+      //   diagonalDifference([
+      //     [1, 2, 3, 1],
+      //     [4, 5, 6, 1],
+      //     [4, 5, 6, 1],
+      //     [9, 8, 9, 1]
+      //   ])
+      // );
+
+      // console.log(
+      //   diagonalDifference([
+      //     [6, 6, 7, -10, 9, -3, 8, 9, -1],
+      //     [9, 7, -10, 6, 4, 1, 6, 1, 1],
+      //     [-1, -2, 4, -6, 1, -4, -6, 3, 9],
+      //     [-8, 7, 6, -1, -6, -6, 6, -7, 2],
+      //     [-10, -4, 9, 1, -7, 8, -5, 3, -5],
+      //     [-8, -3, -4, 2, -3, 7, -5, 1, -5],
+      //     [-2, -7, -4, 8, 3, -1, 8, 2, 3],
+      //     [-3, 4, 6, -7, -7, -8, -3, 9, -6],
+      //     [-2, 0, 5, 4, 4, 4, -3, 3, 0]
+      //   ])
+      // );
+
+      // Given an array of integers, where all elements but one occur twice, find the unique element.
+
+      // let hash = {};
+
+      // function findUnique(arr) {
+      //   for (let a in arr) {
+      //     console.log(hash);
+      //     console.log(Object.keys(hash)[0]);
+      //     if (!hash[arr[a]]) {
+      //       hash[arr[a]] = 0;
+      //     }
+      //     hash[arr[a]]++;
+      //   }
+      //   for (let key in hash) {
+      //     if (hash[key] === 1) {
+      //       return key;
+      //     }
+      //   }
+      // }
+
+      // console.log(findUnique([1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6]));
+
+      // function findMedian(arr) {
+      //   // Write your code here
+      //   let x = arr.sort((a, b) => {
+      //     return a - b;
+      //   });
+
+      //   let y = x[Math.floor(arr.length / 2)];
+      //   return y;
+      // }
+      // console.log(findMedian([5, 2, 3, 4, 1]));
+
+      // function militaryClock(s) {
+      //   // console.log(s);
+      //   let hrs = s.substr(0, 2);
+      //   console.log(hrs);
+
+      //   // Assumptions: Starting String is a valid time in 12-hour AM/PM format.
+      //   // Assumptions: Military time has no PM, all pm is just shifted by 12 hours.
+      //   // Assumptions: Military time has no 12:00AM or 24:00, instead its reads as 00:00.
+      //   // Complete the timeConversion function in the editor below. It should return a new string representing the input time in 24 hour format.
+
+      //   console.log(s);
+      // }
+      // // console.log(militaryClock('07:05:45PM')); // returns '19:05:45'
+      // // console.log(militaryClock('12:40:22AM')); // return '00:40:22'.
+      // // console.log(militaryClock('12:00:00PM')); // return '12:00:00'.
+      // console.log(militaryClock('12:45:54PM')); // return '12:45:54'.
+
+      // Given a time in -hour AM/PM format, convert it to military (24-hour) time.
+
+      // Note: - 12:00:00AM on a 12-hour clock is 00:00:00 on a 24-hour clock.
+      // - 12:00:00PM on a 12-hour clock is 12:00:00 on a 24-hour clock.
+
+      // Example
+
+      // 12:01
+      // Return '12:01:00'.
+      // 12:01:00AM
+      // Return '00:01:00'.
+
+      // function militaryTime(s) {
+      //   let pm = false;
+      //   if (s.includes('PM')) pm = true;
+      //   var timeArray = s.split(':');
+      //   timeArray[3] = timeArray[2].slice(2);
+      //   timeArray[2] = timeArray[2].slice(0, 2);
+      //   let hr = parseFloat(timeArray[0]);
+      //   if (pm && hr != 12) {
+      //     hr += 12;
+      //   }
+      //   if (!pm && hr == 12) {
+      //     hr = 0;
+      //   }
+      //   if (hr < 10) hr = '0' + hr.toString();
+      //   else hr = hr.toString();
+      //   return hr + ':' + timeArray[1] + ':' + timeArray[2];
+      // }
+      // // console.log('07:05:45PM => ', '19:05:45 ', militaryTime('07:05:45PM')); // returns '19:05:45'
+      // console.log('12:40:22AM => ', '00:40:22', militaryTime('12:40:22AM')); // return '00:40:22'.
+      // // console.log('12:00:00PM => ', '12:00:00', militaryTime('12:00:00PM')); // return '12:00:00'.
+      // // console.log('12:45:54PM => ', '12:45:54', militaryTime('12:45:54PM')); // return '12:45:54'.
+
+      // function militaryTimeConverter(time) {
+      //   // Your code here.
+      //   var timeArray = time.split(':');
+      //   var hour = timeArray[0];
+      //   var minute = timeArray[1];
+      //   var second = timeArray[2];
+      //   var ampm = timeArray[3];
+      //   var militaryTime = '';
+      //   if (ampm === 'AM') {
+      //     if (hour === '12') {
+      //       militaryTime = '00:' + minute + ':' + second;
+      //     } else {
+      //       militaryTime = hour + ':' + minute + ':' + second;
+      //     }
+      //   } else {
+      //     if (hour === '12') {
+      //       militaryTime = '12:' + minute + ':' + second;
+      //     } else {
+      //       militaryTime = parseInt(hour) + 12 + ':' + minute + ':' + second;
+      //     }
+      //   }
+      //   return militaryTime;
+      // }
+
+      // function militaryClock(s) {
+      //   // console.log(s);
+
+      //   // Assumptions: Starting String is a valid time in 12-hour AM/PM format.
+      //   // Assumptions: Military time has no PM, all pm is just shifted by 12 hours.
+      //   // Assumptions: Military time has no 12:00AM or 24:00, instead its reads as 00:00.
+
+      //   let pm = false;
+      //   if (s.indexOf('PM') !== -1) pm = true;
+      //   const timeArray = s.split('');
+      //   let hrs = parseInt(timeArray[0] + timeArray[1]);
+      //   if (pm && hrs !== 12) hrs = hrs + 12;
+      //   if (pm && hrs === 24) {
+      //     timeArray[0] = '0';
+      //     timeArray[1] = '0';
+      //   } else if (pm) {
+      //     let hrsArray = hrs.toString().split('');
+      //     timeArray[0] = hrsArray[0];
+      //     timeArray[1] = hrsArray[1];
+      //   }
+      //   if (!pm && hrs === 12) {
+      //     timeArray[0] = '0';
+      //     timeArray[1] = '0';
+      //   }
+      //   timeArray.splice(8, 10);
+      //   let x = timeArray.join('');
+      //   return x;
+      // }
+
+      // // console.log(militaryClock('07:05:45PM')); // returns '19:05:45'
+      // // console.log(militaryClock('12:40:22AM')); // return '00:40:22'.
+      // // console.log(militaryClock('12:00:00PM')); // return '12:00:00'.
+      // console.log(militaryClock('12:45:54PM')); // return '12:45:54'.
+
+      // Function Description
+
+      // Complete the timeConversion function in the editor below. It should return a new string representing the input time in 24 hour format.
+
+      // timeConversion has the following parameter(s):
+
+      // string s: a time in  hour format
+      // Returns
+
+      // string: the time in  hour format
+      // Input Format
+
+      // A single string  that represents a time in -hour clock format (i.e.:  or ).
+
+      // // Print two space-separated long integers denoting the respective minimum and maximum values that can be calculated by summing exactly four of the five integers. (The output can be greater than a 32 bit integer.)
+
+      // function printIntegers(arr) {
+      //   let x = [];
+      //   // let b be the exclude integer
+      //   for (let b in arr) {
+      //     // console.log('excluding: ', arr[b], ' at index ', b);
+      //     let temp = 0;
+      //     for (let a in arr) {
+      //       if (a !== b) {
+      //         // console.log('adding: ', arr[a], ' to sum ');
+      //         temp = temp + arr[a];
+      //       }
+
+      //     }
+      //     // console.log('calculated this number: ', temp);
+      //     x.push(temp);
+      //   }
+
+      //   x.sort((a, b) => { // sort
+      //     return a - b;
+      //   });
+      //   console.log(x[0], x[arr.length - 1]);
+      // }
+
+      // printIntegers([5, 5, 5, 5, 5]);
+
+      // you have an index 0, and each step you will increment that index, so step 1 it will increment by 1 and therefore be at position 1.  Step 2 it will increment by 2 and therefore be at position 4.
+      // you can also skip taking the first step alternatively in another scenario, scenario 2.
+      // and there is a certain index which is bad, and if you are going to land on that index you will just not move, instead of landing on it or skipping over it.
+      // so the problem is, sort out, between these two scenarios, what the highest index is you could reach.
+
+      // function runTheChallenge(steps, badIndex) {
+      //   console.log('steps: ', steps);
+      //   console.log('badIndex: ', badIndex);
+
+      //   let i = 0; // main index
+      //   let i_2nd = 0; // secondary index
+
+      //   function firstScenario() {
+      //     console.log('index: ', i);
+      //   }
+
+      //   function secondScenario() {}
+
+      //   return;
+      // }
+
+      // // TESTS
+      // console.log('( 9 ) => ', runTheChallenge(4, 6));
+      // console.log('( 3 ) Return => ', runTheChallenge(2, 2));
+      // console.log('( 819 ) => ', runTheChallenge(40, 10)); // should return 819
+      // console.log('( 5 ) => ', runTheChallenge(3, 3));
+
+      // [0,1,2...]
+
+      // i = starting index
+      // j = change
+      // i+j = position after the change
+
+      // j begins at 1, and at each step increments by 1
+
+      //  j and steps are ===
+      //
+
+      // you have an index 0, and each step you will increment that index, so step 1 it will increment by 1 and therefore be at position 1.  Step 2 it will increment by 2 and therefore be at position 4.
+      // you can also skip taking the first step alternatively in another scenario, scenario 2.
+      // and there is a certain index which is bad, and if you are going to land on that index you will just not move, instead of landing on it or skipping over it.
+      // so the problem is, sort out, between these two scenarios, what the highest index is you could reach.
+
+      // function runTheChallenge(steps, badIndex) {
+      //   console.log('steps: ', steps);
+      //   console.log('badIndex: ', badIndex);
+
+      //   let j = 1;
+      //   let i = 0;
+      //   let i_scenario_2 = 0;
+
+      //   function firstScenario() {
+      //     for (let j = 1; j <= steps; j++) {
+      //       if (i + j !== badIndex) {
+      //         console.log(
+      //           'j: is ',
+      //           j,
+      //           ' so move ',
+      //           j,
+      //           ' steps from ',
+      //           i,
+      //           ' => ',
+      //           i + j
+      //         );
+      //         i = i + j;
+      //       } else {
+      //         console.log('skipping this bad index');
+      //       }
+      //     }
+      //     console.log('First Scenario Result was ', i);
+      //     return i;
+      //   }
+
+      //   function secondScenario() {
+      //     for (let j = 1; j <= steps; j++) {
+      //       if (j === 1) {
+      //         console.log('skipping first shot at movement ');
+      //       } else if (i_scenario_2 + j !== badIndex) {
+      //         console.log(
+      //           'j: is ',
+      //           j,
+      //           ' so move ',
+      //           j,
+      //           ' steps from ',
+      //           i_scenario_2,
+      //           ' => ',
+      //           i_scenario_2 + j
+      //         );
+      //         i_scenario_2 = i_scenario_2 + j;
+      //       } else {
+      //         console.log('skipping this bad index');
+      //       }
+      //     }
+      //     console.log('Second Scenario Result was ', i_scenario_2);
+
+      //     return i_scenario_2;
+      //   }
+
+      //   let z = firstScenario(steps, badIndex);
+      //   let z2 = secondScenario(steps, badIndex);
+
+      //   if (z > z2) return z;
+      //   else return z2;
+      // }
+
+      // // starting position 1 would be an edge case ...
+
+      // //...
+
+      // // TESTS
+      // console.log('( 9 ) => ', runTheChallenge(4, 6));
+      // console.log('( 3 ) Return => ', runTheChallenge(2, 2));
+      // console.log('( 819 ) => ', runTheChallenge(40, 10)); // should return 819
+      // console.log('( 5 ) => ', runTheChallenge(3, 3));
+      // let calculate_ratios = (arr) => {
+      // // Given an array of integers, calculate the ratios of its elements that are positive, negative, and zero. Print the decimal value of each fraction on a new line with  places after the decimal.
+      // // Translation:  take the array of integers and see what fraction of them is positive.  convert that fraction to a decimal that is 6 places after zero in accuracy... .000006 for example.  Then repeat for zero items and negative items.. console log each of them on a new line.
+
+      // // Note: This challenge introduces precision problems. The test cases are scaled to six decimal places, though answers with absolute error of up to  are acceptable.
+
+      //   let pos = 0;
+      //   let neg = 0;
+      //   let zero = 0;
+      //   for (let i = 0; i < arr.length; i++) {
+      //     if (arr[i] > 0) {
+      //       pos++;
+      //     } else if (arr[i] < 0) {
+      //       neg++;
+      //     } else {
+      //       zero++;
+      //     }
+      //   }
+      //   let pos_ratio = pos / arr.length;
+      //   let neg_ratio = neg / arr.length;
+      //   let zero_ratio = zero / arr.length;
+      //   console.log(pos_ratio.toFixed(6));
+      //   console.log(neg_ratio.toFixed(6));
+      //   console.log(zero_ratio.toFixed(6));
+      // }
+
+      // calculate_ratios([1,1,0,-1,-1]);
+
+      // function mergeSort(a1, a2) {
+      //   // sort the 2 arrays provided as efficiently as possible while merging them into a new array
+      //   let sorted = [];
+      //   let totalLength = [...a1, ...a2].length;
+      //   console.log('length', totalLength);
+      //   for (let a = 0; a < totalLength; a++) {
+      //     if (a1[0] < a2[0] || a2.length === 0) {
+      //       sorted.push(a1.shift());
+      //     } else {
+      //       sorted.push(a2.shift());
+      //     }
+      //   }
+      //   console.log('a1: ', a1, ' a2: ', a2, ' sorted: ', sorted);
+      //   return sorted;
+      // }
+
+      // console.log(
+      //   'return',
+      //   mergeSort(
+      //     [1, 2, 3, 6, 18, 2999],
+      //     [4, 5, 77, 88, 1000, 2000, 3000, 4000]
+      //   )
+      // );
+
+      // Function Merge Sort
+
+      // function mergeSort(array) {
+      //   // takes in a single unsorted array and splits into 2 halves
+      //   if (array.length > 0) {
+      //     let midpoint = Math.floor(array.length / 2);
+      //     console.log('midpoint: ', midpoint);
+      //     console.log('starting array: ', array);
+      //     let arr1 = array.slice(0,midpoint);
+      //     let arr2 = array.slice(midpoint);
+      //     console.log(arr2, arr1);
+      //   } else {
+      //     return array;
+      //   }
+      // }
+
+      // function merge(array1, array2) {
+      //   console.log([...array1, ...array2]);
+      //   mergeSort([...array1, ...array2])
+      //   return [...array1, ...array2];
+      //   // takes in two sorted arrays
+      // }
+
+      // console.log(merge([1, 2, 3, 6, 18, 2999], [4, 5, 77, 88, 1000]));
+
+      // Function Merge Sort
+      // function mergeSort(array1, array2) {
+      //   let mergeArray = [];
+      //   const totalIterations = array1.length + array2.length;
+
+      //   for (i = 0; i < totalIterations; i++) {
+      //     if (array1[0] < array2[0] || !array2[0]) {
+      //       let x = array1.shift();
+      //       mergeArray.push(x);
+      //     } else if (array1[0] > array2[0] || !array1[0]) {
+      //       let y = array2.shift();
+      //       mergeArray.push(y);
+      //     }
+      //   }
+      //   return mergeArray;
+      // }
+
+      // console.log(mergeSort([1, 2, 3, 6, 18, 2999], [4, 5, 77, 88, 1000]));
+
+      // // Function Merge Sort
+      // function mergeSort(array1, array2) {
+      //   // sort the 2 arrays provided as efficiently as possible while merging them into a new array
+      //   console.log(array1);
+      //   console.log(array2);
+
+      //   // check the first element of each array, and put the lower of the 2 into the next array.
+
+      //   let mergeArray = [];
+
+      //   let totalIterations = array1.length + array2.length;
+
+      //   for (i = 0; i < totalIterations; i++) {
+      //     console.log('i is now: ', i);
+      //     console.log('array1 length is: ', array1.length);
+      //     console.log('comparing ', array1[0], ' & ', array2[0]);
+      //     if (array1[0] < array2[0] || !array2[0]) {
+      //       mergeArray.push(array1[0]);
+      //       array1.splice(0, 1);
+      //       console.log('array 1 now: ', array1);
+      //     } else if (array1[0] > array2[0] || !array1[0]) {
+      //       mergeArray.push(array2[0]);
+      //       array2.splice(0, 1);
+      //       console.log('array 2 now: ', array1);
+      //     }
+      //   }
+      //   console.log(
+      //     'done status: array1: ',
+      //     array1,
+      //     ' and array2: ',
+      //     array2,
+      //     ' and merge array: ',
+      //     mergeArray
+      //   );
+      // }
+
+      // console.log(mergeSort([1, 2, 3, 6, 18, 2999], [4, 5, 77, 88, 1000]));
+
+      // Object Destructuring
+      // const getUser = () => {
+      //   return {
+      //     name: 'jonathan',
+      //     address: {
+      //       country: 'US',
+      //       fullAddress: {
+      //         doorNumber: 22
+      //       }
+      //     },
+      //     age: 42
+      //   };
+      // };
+      // const user = getUser();
+      // const {
+      //   name,
+      //   age,
+      //   address: {
+      //     country,
+      //     fullAddress: { doorNumber: doorNumber }
+      //   }
+      // } = user;
+
+      // const {
+      //   address: {
+      //     fulladdress: { doorNumber: number }
+      //   }
+      // } = user;
+
+      // const {
+      //   address: {
+      //     fullAddress: { doorNumber: number }
+      //   }
+      // } = user;
+
+      // const { doorNumber } = user.address.fullAddress;
+
+      // const {
+      //   name2,
+      //   age2,
+      //   address: { country: country }
+      // } = user;
+      // Replace the above code with a spread operator assignment.
+
+      // console.log(
+      //   `      User:           ${name}
+      // age:            ${age}
+      // country:        ${country}
+      // door number:    ${doorNumber}`
+      // );
+
+      // spread objects
+      // combine these 2 objects with a spread operator
+      // const address = {
+      //   1: 1,
+      //   2: 2
+      // };
+      // const name = {
+      //   3: 3,
+      //   4: 4
+      // };
+
+      // let person2 = console.log({...name, ...address});
+
+      // function bubbleSort(array) {
+      //   // take in an array of numbers, and return that array of numbers sorted
+      //   // considerations - try to optimize by only sorting the number of times needed
+      //   // use a bubble up method
+      //   // consider recursive function options
+      //   console.log(array);
+
+      //   // set this to iterate, but make it iterate only the number of times that needed
+      //   for (b = 0; b <= array.length - 1; b++) {
+      //     console.log('b: ', b);
+      //     console.log(
+      //       'checking from index: ',
+      //       b,
+      //       ' to index: ',
+      //       array.length - 1
+      //     );
+      //     for (let a = array.length - 1; a > b; a--) {
+      //       console.log(
+      //         'index: ',
+      //         a,
+      //         'a-2: ',
+      //         array[a - 1],
+      //         ' a-1: ',
+      //         array[a]
+      //       );
+
+      //       if (array[a - 1] > array[a]) {
+      //         let x = array[a];
+      //         array[a] = array[a - 1];
+      //         array[a - 1] = x;
+      //         // console.log(array);
+      //       }
+      //     }
+      //   }
+
+      //   return array;
+      // }
+      // // console.log(bubbleSort([5, 3]));
+      // // console.log(bubbleSort([5, 3, 8, 2]));
+      // console.log(bubbleSort([5, 3, 8, 2, 1, 4, 1, 1, 120, 1, 1, 2]));
+
+      // function bubbleSort(array) {
+      //   // take in an array of numbers, and return that array of numbers sorted
+      //   // considerations - try to optimize by only sorting the number of times needed
+      //   // use a bubble up method
+      //   // consider recursive function options
+      //   // console.log(array);
+      //   console.log('array length: ', array.length);
+      //   for (var i = array.length - 1; i > 0; i--) {
+      //     console.log(array);
+
+      //     // for each item starting at the last one ( index? , well theres 2 items, so the last one is the length ( 2 ) minus 1, or index 1. )
+      //     // BUT, your comparing 2, so if you want to start by comparing the last one ( array.length -1 ) with the one before it, you might as well start with position array.length -2, and if theres only 2 of them and your comparison covers 2 of them in a single sweep, then well, you only need length -1 number of comparisons to complete. so if you start at i = array.length -2 for the index ( thats index 0) and compare to array.length -1 ( thats index 1 ), then your i decrements, your i will hit zero too fast.
+
+      //     // so to combine both iterations, what makes the most sense is actually comparing the first index as the last item.  thats array.length -1 ( 1 ), and then decrementing i ( will go to 0 next ) and since you know with only 2 items you need only 1 iteration because your covering 2 items with the first compare, and then adding 1 more item into coverage with each sequential comparison, then your good to make the number of iterations into length - 1 as well.  That can be accomplished by setting the stop point to index zero and starting with i being length -1, that gives the total interations as length -1.
+
+      //     // total iterations :  length -1
+      //     console.log(' array[i]: ', array[i], ' array[i+1]: ', array[i - 1]);
+
+      //     let x = array[i - 1];
+      //     let y = array[i];
+      //     if (array[i - 1] > array[i]) {
+      //       let z = array[i - 1];
+      //       array[i - 1] = array[i];
+      //       array[i] = z;
+      //     }
+      //   }
+
+      //   return array;
+      // }
+      // // console.log(bubbleSort([5, 3, 8, 2]));
+      // console.log(bubbleSort([5, 3, 8, 2, 1, 4]));
+
+      // Bubble Sort
+
+      // function bubbleSort(array) {
+      //   // take in an array of numbers, and return that array of numbers sorted
+      //   console.log(array);
+      //   for (let x = array.length; x > 0; x--) {
+      //     console.log('pass #: ', x);
+
+      //     for (let i = 0; i < x; i++) {
+      //       let y = array[i];
+      //       let z = array[i + 1];
+      //       console.log('checking for > beween y: ', y, ' z: ', z);
+      //       if (y > z) {
+      //         let q = z;
+      //         array[i + 1] = y;
+      //         array[i] = q;
+      //         console.log('sorted, array now: ', array);
+      //       }
+      //     }
+      //   }
+      //   return array;
+      // }
+      // console.log(bubbleSort([5, 3, 8, 2, 1, 4]));
+
+      // // Object Destructuring
+      // const getUser = () => {
+      //   return {
+      //     name2: 'jonathan',
+      //     address: {
+      //       country: 'US',
+      //       fullAddress: {
+      //         doorNumber: 22
+      //       }
+      //     },
+      //     age2: 42
+      //   };
+      // };
+      // const user = getUser();
+      // // const name2 = user.name;
+      // // const age2 = user.age;
+      // // const country = user.address.country;
+      // // const doorNumber = user.address.fullAddress.doorNumber;
+
+      // const {
+      //   name2,
+      //   age2,
+      //   address: { country: country }
+      // } = user;
+
+      // const {
+      //   address: {
+      //     fullAddress: { doorNumber: number }
+      //   }
+      // } = user;
+      // // Replace the above code with a spread operator assignment.
+
+      // console.log(
+      //   `      User:           ${name2}
+      // age:            ${age2}
+      // country:        ${country}
+      // door number:    ${number}`
+      // );
+
+      // const pricePropName = 'PRICE';
+      // const calculator = (name, price) => {
+      //   return {
+      //     name,
+      //     add(n1, n2) {
+      //       return n1 + n2;
+      //     },
+      //     [pricePropName.toLowerCase()]: price
+      //   };
+      // };
+
+      // const calc = calculator('casio', 19.99);
+      // console.log(calc.name);
+      // console.log(calc.add(10, 20));
+      // console.log(calc.price);
+      // const person3 = {
+      //   name: 'jonathan',
+      //   cars: ['old moto', 'lambo'],
+      //   toString: function () {
+      //     this.cars.forEach((car) => {
+      //       console.log(`${this.name} has ${car}`);
+      //     });
+      //   }
+      // };
+      // person3.toString();
+
+      // const address = {
+      //   1: 1,
+      //   2: 2
+      // };
+      // const name = {
+      //   3: 3,
+      //   4: 4
+      // };
+
+      // // combine these 2 objects with a spread operator
+      // let person = console.log({ ...address, ...name });
+
+      // function twoSum(numArray, sum) {
+      //   // returns every pair of numbers from 'numArray' that adds up to the sum
+      //   let pairs = [];
+      //   let checked = [];
+      //   for (a in numArray) {
+      //     console.log(numArray[a]);
+      //     checked.push(numArray[a]);
+      //     let needed = 7 - numArray[a];
+      //     if (checked.indexOf(needed) !== -1) {
+      //       pairs.push([numArray[a], needed]);
+      //     }
+      //   }
+      //   console.log('checked:', checked);
+      //   console.log('pairs:', pairs);
+      // }
+
+      // twoSum([1, 6, 4, 5, 3, 3], 7);
+      // function binarySearch(numberArray, lookedFor) {
+      //   // generate a binary seach algorithm
+      //   // search for a given value ( lookedFor ) inside of a list ( number array )
+      //   // write this as a recursive algorithm.
+      //   let a = numberArray.sort((a, b) => {
+      //     return a - b;
+      //   });
+      //   console.log(numberArray);
+      //   let i = Math.floor(numberArray.length / 2);
+      //   console.log('i: ', i);
+      //   console.log(
+      //     'lookedFor: ',
+      //     lookedFor,
+      //     ' found: ',
+      //     numberArray[i],
+      //     ' at index: ',
+      //     i
+      //   );
+      //   let found = numberArray[i];
+      //   if (lookedFor < found) {
+      //     console.log(
+      //       'looked for < found so cut the second half including this number '
+      //     );
+      //     numberArray.splice(i);
+      //     console.log('after splice: ', numberArray);
+      //     binarySearch(numberArray, lookedFor);
+      //   } else if (lookedFor > found) {
+      //     console.log(
+      //       'looked for > found so cut the first half including this number '
+      //     );
+      //     numberArray.splice(0, i + 1);
+      //     console.log('after splice: ', numberArray);
+      //     binarySearch(numberArray, lookedFor);
+      //   } else if (lookedFor === found) {
+      //     console.log('found it ');
+      //     return i;
+      //   }
+      // }
+      // binarySearch([2, 1, 1, 4, 5, 3, 3, 3, 2, 4, 6, 7, 3], 7);
+
+      // function factorial(number) {
+      //   // calculate every number from the number down to 1 muliplied by themselves, so for 3 is 3 * 2 * 1 = the factorial
+      //   if (number === 1) {
+      //     return number;
+      //     // base case here ( determine what case would provide the same output as the input)
+      //   } else {
+      //     // main case here
+      //     return factorial(number - 1) * number;
+      //   }
+      //   console.log('number: ', number);
+      // }
+      // console.log('factorial: ', factorial(3));
+
+      // function twoSum(numArray, sum) {
+      //   // returns every pair of numbers from 'numArray' that adds up to the sum
+      //   console.log(numArray);
+      //   let checked = [];
+      //   let pairs = [];
+      //   for (a in numArray) {
+      //     console.log('current number: ', numArray[a]);
+      //     if (checked.indexOf(7 - numArray[a]) !== -1) {
+      //       pairs.push([numArray[a], 7 - numArray[a]]);
+      //       console.log('====> adding pair');
+      //     }
+      //     checked.push(numArray[a]);
+      //     console.log(
+      //       'adding checked number ',
+      //       numArray[a],
+      //       'checked is now: ',
+      //       checked
+      //     );
+      //   }
+      //   console.log('pairs: ', pairs);
+      //   return pairs;
+      // }
+
+      // twoSum([1, 6, 4, 5, 3, 3], 7);
+
+      // function binarySearch(numberArray, key) {
+      //   // generate a binary seach algorithm
+      //   // search for a given value ( key ) inside of a list ( number array )
+      //   // write this as a recursive algorithm.
+      //   numberArray.sort((a, b) => {
+      //     return a - b;
+      //   });
+      //   console.log('array length: ', numberArray.length);
+      //   let i = Math.floor(numberArray.length / 2);
+      //   if (numberArray.length >= 1) {
+      //     if (key === numberArray[i]) {
+      //       console.log(
+      //         'looking for === looked at',
+      //         '( ) ==== = = = == = = = == > found it'
+      //       );
+      //       return key;
+      //     } else if (key > numberArray[i]) {
+      //       console.log(
+      //         'looked for: ',
+      //         key,
+      //         ' > ',
+      //         'found:',
+      //         numberArray[i],
+      //         numberArray
+      //       );
+      //       console.log('before slice: ', numberArray);
+      //       numberArray.splice(0, Math.floor(numberArray.length / 2));
+      //       console.log('after slice: ', numberArray);
+      //       binarySearch(numberArray, key);
+      //     } else if (key < numberArray[i]) {
+      //       console.log('looking for < found ');
+      //       console.log('before slice: ', numberArray);
+
+      //       numberArray.splice(Math.floor(numberArray.length / 2));
+      //       console.log('after slice: ', numberArray);
+
+      //       binarySearch(numberArray, key);
+      //     }
+      //   } else {
+      //     return 'not here ';
+      //   }
+      // }
+      // console.log(binarySearch([2, 1, 1, 4, 5, 3, 3, 3, 2, 4, 6, 7, 3], 5));
+
+      // function binarySearch(numberArray, numberSought) {
+      //   // generate a binary seach algorithm
+      //   // search for a given value ( numberSought ) inside of a list ( number array )
+      //   // write this as a recursive algorithm.
+      //   numberArray.sort((x, y) => {
+      //     return x - y;
+      //   });
+      //   console.log(numberArray);
+      //   let y = Math.floor(numberArray.length / 2);
+      //   console.log('mid index: ', y);
+      //   console.log(
+      //     'looking at: ',
+      //     numberArray[y],
+      //     'looking for ( numberSought ): ',
+      //     numberSought
+      //   );
+      //   if (numberSought < numberArray[y]) {
+      //     console.log(
+      //       'looking for ( numberSought ): ',
+      //       numberSought,
+      //       ' is smaller than checked index ',
+      //       numberArray[y],
+      //       ' so we are searching for something earlier in this sorted array, and need to cut here to later parts'
+      //     );
+      //     console.log('length: ', numberArray.length, ' index searched: ', y);
+      //     console.log('before chop:', numberArray);
+
+      //     numberArray.splice(Math.floor(numberArray.length / 2));
+      //     console.log('after chop:', numberArray);
+      //     binarySearch(numberArray, numberSought);
+      //   } else if (numberArray[y] < numberSought) {
+      //     console.log(
+      //       'number we are checking out: ',
+      //       numberArray[y],
+      //       ' is smaller than the number we are looking for: ',
+      //       numberSought,
+      //       ' so we are searching for something later in this sorted array, and need to cut here to earlier parts'
+      //     );
+      //     console.log('before chop:', numberArray);
+      //     numberArray.splice(0, Math.floor(numberArray.length / 2));
+      //     console.log('after chop:', numberArray);
+      //     binarySearch(numberArray, numberSought);
+      //   } else if (numberArray[y] === numberSought) {
+      //     console.log('found it');
+      //     return 'found it: ', y;
+      //   }
+      // }
+      // binarySearch([2, 1, 1, 4, 5, 3, 3, 3, 2, 4, 6, 7, 3], 5);
+
+      // function factorial(number) {
+      //   // calculate every number from the number down to 1 muliplied by themselves, so for 3 is 3 * 2 * 1 = the factorial
+      //   if (number < 1) return;
+      //   else if (number === 1) {
+      //     return 1;
+      //     // base case here ( determine what case would provide the same output as the input)
+      //   } else {
+      //     return number * factorial(number - 1);
+      //     // main case here
+      //   }
+      //   console.log('number: ', number);
+      // }
+      // console.log('factorial: ', factorial(3)); // returns 6
+      // console.log('factorial: ', factorial(10)); // returns 3,628,800
+
+      // function fibbonacciMemo(index, cache) {
+      //   //   // return a given positions value of the fibbonaci sequence, the fibbonacci sequence is 1,1,2,3,5,8...
+      //   console.log('cache: ', cache);
+      //   // index: seek that index of the fibbonacci sequence
+      //   // cache: an array used as memory
+      //   // check to see if the number is in the cache, if it is not, calculate it and then add it.  if it is, use it.
+      //   if (index === 0) return 1;
+      //   if (index === 1) return 1;
+      //   if (index === 2) return 1;
+      //   if (index > 2) {
+      //     if (!cache[index]) {
+      //       cache[index] =
+      //         fibbonacciMemo(index - 1, cache) +
+      //         fibbonacciMemo(index - 2, cache);
+      //       return cache[index];
+      //     } else return cache[index];
+      //   }
+      // }
+      // // console.log(fibbonacciMemo(4, {})); // returns 3
+      // console.log(fibbonacciMemo(9, {})); // returns 34
+
+      // function fibbonacci(position) {
+      //   // return a given positions value of the fibbonaci sequence, the fibbonacci sequence is 1,1,2,3,5,8...
+      //   // Requirements:  must use recursion
+      //   // exponential runtime using recursion
+      //   console.log('working w position: ', position);
+      //   if (position === 1) return 1;
+      //   if (position === 2) return 1;
+      //   if (position > 2)
+      //     return fibbonacci(position - 1) + fibbonacci(position - 2);
+      // }
+      // console.log(fibbonacci(4)); // returns 3
+      // console.log(fibbonacci(9)); // returns 34
+
+      // function sieveOferatosthenes(number) {
+      //   // return all prime numbers up to
+      //   // the number in the array
+      //   console.log(number);
+      //   let primes = [];
+      //   for (i = 0; i <= number; i++) {
+      //     primes[i] = true;
+      //   }
+      //   console.log(primes);
+      //   primes[0] = false;
+      //   primes[1] = false;
+      //   primes[2] = true;
+
+      //   for (y = 2; y < number; y++) {
+      //     for (x = y; x * y <= number; x++) {
+      //       console.log('marking ', y, ' * ', x, ' as false ');
+      //       primes[y * x] = false;
+      //     }
+      //   }
+      //   console.log(primes);
+      // }
+      // sieveOferatosthenes(20);
+
+      // function sieveOferatosthenes(number) {
+      //   // return all prime numbers up to
+      //   // the number in the array
+      //   var primes = [];
+      //   primes[0] = false;
+      //   primes[1] = false;
+      //   for (var i = 2; i <= number; i++) {
+      //     // initializing all numbers as prime
+      //     primes[i] = true;
+      //   }
+      //   // now start with a 2 and mark all multiples as nonprime
+      //   for (i = 2; i <= number; i++) {
+      //     if (primes[i]) {
+      //       console.log('checking: ', i);
+      //       // for all numbers which are multiples of 2, mark as nonprime
+      //       for (j = 2; j * i <= number; j++) {
+      //         primes[i * j] = false;
+      //       }
+      //     }
+      //   }
+
+      //   console.log(primes);
+      // }
+      // sieveOferatosthenes(20);
+
+      // Goals:
+      // First pass = Design a parking lot using object-oriented principles
+      // Second pass = Design a parking lot using functional programming principles
+      // Third pass = Design a parking lot using class based javascript principles
+
+      // Here are a few methods that you should be able to run:
+      // DONE - Tell us how many spots are remaining
+      // DONE - Tell us how many total spots are in the parking lot
+      // DONE - Tell us when the parking lot is full
+      // DONE - Tell us when the parking lot is empty
+      // DONE - Tell us when certain spots are full e.g. when all motorcycle spots are taken
+      // DONE - Tell us how many spots vans are taking up
+
+      // **** Assumptions **** :
+      // DONE - The parking lot can hold motorcycles, cars and vans
+      // DONE - The parking lot has motorcycle spots, car spots and large spots
+      // DONE - A motorcycle can park in any spot
+      // DONE - A car can park in a single compact spot, or a regular spot
+      // DONE - A van can park, but it will take up 3 regular spots
+      // DONE - These are just a few assumptions. Feel free to ask your interviewer about more assumptions as needed
+
+      // let parkingLot = {
+      //   motorcycleSpots_total: 10,
+      //   motorcycleSpots_used: 7,
+      //   compactSpots_total: 10,
+      //   compactSpots_used: 8,
+      //   regularSpots_total: 10,
+      //   regularSpots_used: 7,
+      //   total_vans_onsite: 1,
+      //   spacesCheck(typeOfCheck) {
+      //     let {
+      //       motorcycleSpots_total,
+      //       motorcycleSpots_used,
+      //       compactSpots_total,
+      //       compactSpots_used,
+      //       regularSpots_total,
+      //       regularSpots_used,
+      //       total_vans_onsite
+      //     } = parkingLot;
+      //     return typeOfCheck === 'motoSpots'
+      //       ? motorcycleSpots_total - motorcycleSpots_used
+      //       : typeOfCheck === 'compactCapacity'
+      //       ? compactSpots_total - compactSpots_used
+      //       : typeOfCheck === 'regularCapacity'
+      //       ? regularSpots_total - regularSpots_used
+      //       : typeOfCheck === 'totalVans'
+      //       ? total_vans_onsite
+      //       : typeOfCheck === 'motoCapacity'
+      //       ? motorcycleSpots_total -
+      //         motorcycleSpots_used +
+      //         (compactSpots_total - compactSpots_used) +
+      //         (regularSpots_total - regularSpots_used)
+      //       : typeOfCheck === 'regularSpots'
+      //       ? regularSpots_total - regularSpots_used
+      //       : typeOfCheck === 'compactSpots'
+      //       ? compactSpots_total - compactSpots_used
+      //       : typeOfCheck === 'vanCapacity'
+      //       ? Math.floor(spacesCheck('regularSpots') / 3)
+      //       : typeOfCheck === 'vanFull'
+      //       ? Math.floor(spacesCheck('regularSpots') / 3) === 0
+      //       : typeOfCheck === 'vanSpacesUsed'
+      //       ? total_vans_onsite * 3
+      //       : typeOfCheck === 'carCapacity'
+      //       ? spacesCheck('regularCapacity') + spacesCheck('compactCapacity')
+      //       : typeOfCheck === 'compactUsed'
+      //       ? compactSpots_used
+      //       : typeOfCheck === 'compactRemaining'
+      //       ? compactSpots_total - compactSpots_used
+      //       : typeOfCheck === 'compactTotal'
+      //       ? compactSpots_total
+      //       : typeOfCheck === 'regularUsed'
+      //       ? regularSpots_used
+      //       : typeOfCheck === 'regularTotal'
+      //       ? regularSpots_total
+      //       : typeOfCheck === 'allRemaining'
+      //       ? spacesCheck('motoSpots') +
+      //         spacesCheck('regularCapacity') +
+      //         spacesCheck('compactCapacity')
+      //       : typeOfCheck === 'totalSpots'
+      //       ? motorcycleSpots_total + compactSpots_total + regularSpots_total
+      //       : typeOfCheck === 'totalSpotsUsed'
+      //       ? motorcycleSpots_used + compactSpots_used + regularSpots_used
+      //       : typeOfCheck === 'full'
+      //       ? spacesCheck('motoCapacity') === 0 &&
+      //         spacesCheck('regularCapacity') === 0 &&
+      //         spacesCheck('compactCapacity') === 0
+      //       : typeOfCheck === 'empty'
+      //       ? spacesCheck('totalSpotsUsed') === 0
+      //       : typeOfCheck === 'carFull'
+      //       ? spacesCheck('regularCapacity') &&
+      //         spacesCheck('compactCapacity') === 0
+      //       : '===> bad formula';
+      //   },
+      //   park(vehicle) {
+      //     let {
+      //       motorcycleSpots_total,
+      //       motorcycleSpots_used,
+      //       compactSpots_total,
+      //       compactSpots_used,
+      //       regularSpots_total,
+      //       regularSpots_used,
+      //       total_vans_onsite
+      //     } = this;
+
+      //     if (vehicle === 'car') {
+      //       // if space in compact
+      //       if (spacesCheck('compactCapacity') > 0) {
+      //         parkingLot['compactSpots_used']++;
+      //         return 'car parked in compact';
+      //       } else if (spacesCheck('regularCapacity') > 0) {
+      //         parkingLot['regularSpots_used']++;
+      //         return 'car parked in regular';
+      //       } else {
+      //         return 'cant park car, were full ';
+      //       }
+      //     } else if (vehicle === 'motorcycle') {
+      //       if (spacesCheck('motoCapacity') > 0) {
+      //         parkingLot['motorcycleSpots_used']++;
+      //         return 'moto parked in moto spot ';
+      //       } else if (spacesCheck('regularCapacity') > 0) {
+      //         parkingLot['regularSpots_used']++;
+      //         return 'moto in regular spot ';
+      //       } else if (spacesCheck('compactCapacity') > 0) {
+      //         parkingLot['compactSpots_used']++;
+      //         return 'moto in compact spot ';
+      //       } else {
+      //         return 'cant park motorcycle, were full ';
+      //       }
+      //     } else if (vehicle === 'van') {
+      //       if (spacesCheck('vanCapacity') > 0) {
+      //         parkingLot['total_vans_onsite']++;
+      //         parkingLot['regularSpots_used'] =
+      //           parkingLot['regularSpots_used'] + 3;
+      //         return 'van parked in 3 regular spots  ';
+      //       } else {
+      //         return 'cant park van, were full ';
+      //       }
+      //     }
+      //   }
+      // };
+
+      // // TESTS
+      // let { spacesCheck } = parkingLot;
+      // console.log('lot state: ', parkingLot);
+      // console.log(parkingLot.park('car'));
+      // console.log(parkingLot.park('motorcycle'));
+      // console.log(parkingLot.park('van'));
+      // console.log(parkingLot.park('car'));
+      // console.log(parkingLot.park('car'));
+      // console.log(parkingLot.park('motorcycle'));
+      // console.log(parkingLot.park('van'));
+      // console.log('lot state: ', parkingLot);
+      // console.log(' moto capacity: ', spacesCheck('motoCapacity'));
+      // console.log('remaining van capacity: ', spacesCheck('vanCapacity'));
+      // console.log('van Spaces full?: ', spacesCheck('vanFull'));
+      // console.log('spaces vans using up?: ', spacesCheck('vanSpacesUsed'));
+      // console.log('remaining car capacity: ', spacesCheck('carCapacity'));
+      // console.log('moto spaces avail: ', spacesCheck('motoSpots'));
+      // console.log('compact spaces used: ', spacesCheck('compactUsed'));
+      // console.log('compact spaces avail: ', spacesCheck('compactRemaining'));
+      // console.log('compact spaces total: ', spacesCheck('compactTotal'));
+      // console.log('regular spaces used: ', spacesCheck('regularUsed'));
+      // console.log('regular spaces avail: ', spacesCheck('regularSpots'));
+      // console.log('regular spaces total: ', spacesCheck('regularTotal'));
+      // console.log('all spaces remaining : ', spacesCheck('allRemaining'));
+      // console.log('total spaces in lot: ', spacesCheck('totalSpots'));
+      // console.log('total spaces used ', spacesCheck('totalSpotsUsed'));
+      // console.log('is Lot full: ', spacesCheck('full'));
+      // console.log('is Lot empty?: ', spacesCheck('empty'));
+      // console.log('are car Spaces full?: ', spacesCheck('carFull'));
+
+      // var spreadOperator = function (arr1, arr2) {
+      //   // set an array to contain the spreaded elements plus the existing array.
+      //   console.log([...arr1, ...arr2]);
+      //   return [...arr1, ...arr2];
+      // };
+      // console.log(spreadOperator([1, 2, 3, 4, 5], [6, 7, 8, 9, 10]));
+
+      // const addNumbers = function (n1, n2, n3) {
+      //   return n1 + n2 + n3;
+      // };
+      // const numbers = [1, 2, 3];
+
+      // // const addition = addNumbers(numbers[0], numbers[1], numbers[2]);
+
+      // const additiion = console.log(addNumbers(...numbers));
+      // replace this function with a spread operator
+
+      // Goals:
+      // Design a parking lot using object-oriented principles
+
+      // Here are a few methods that you should be able to run:
+      // TODO - Tell us how many spots are remaining
+      // TODO - Tell us how many total spots are in the parking lot
+      // TODO - Tell us when the parking lot is full
+      // TODO - Tell us when the parking lot is empty
+      // TODO - Tell us when certain spots are full e.g. when all motorcycle spots are taken
+      // TODO - Tell us how many spots vans are taking up
+
+      // **** Assumptions **** :
+      // DONE - The parking lot can hold motorcycles, cars and vans
+      // DONE - The parking lot has motorcycle spots, car spots and large spots
+      // DONE - A motorcycle can park in any spot
+      // DONE - A car can park in a single compact spot, or a regular spot
+      // DONE - A van can park, but it will take up 3 regular spots
+      // DONE - These are just a few assumptions. Feel free to ask your interviewer about more assumptions as needed
+
+      // let parkingLot = {
+      //   motorcycleSpots_total: 10,
+      //   motorcycleSpots_used: 7,
+      //   compactSpots_total: 10,
+      //   compactSpots_used: 8,
+      //   regularSpots_total: 10,
+      //   regularSpots_used: 7,
+      //   total_vans_onsite: 1,
+      //   spacesCheck(typeOfCheck) {
+      //     let {
+      //       motorcycleSpots_total,
+      //       motorcycleSpots_used,
+      //       compactSpots_total,
+      //       compactSpots_used,
+      //       regularSpots_total,
+      //       regularSpots_used,
+      //       total_vans_onsite
+      //     } = parkingLot;
+      //     return typeOfCheck === 'motorcycleRemaining'
+      //       ? parkingLot.motorcycleSpots_total - parkingLot.motorcycleSpots_used
+      //       : typeOfCheck === 'vanCapacity'
+      //       ? Math.floor((regularSpots_total - regularSpots_used) / 3)
+      //       : typeOfCheck === 'vanFull'
+      //       ? spacesCheck('vanCapacity') === 0
+      //       : typeOfCheck === 'vanSpacesUsed'
+      //       ? total_vans_onsite * 3
+      //       : typeOfCheck === 'carCapacity'
+      //       ? spacesCheck('compactRemaining') + spacesCheck('regularRemaining')
+      //       : typeOfCheck === 'motoCapacity'
+      //       ? spacesCheck('compactRemaining') +
+      //         spacesCheck('regularRemaining') +
+      //         spacesCheck('motorcycleRemaining')
+      //       : typeOfCheck === 'compactUsed'
+      //       ? compactSpots_used
+      //       : typeOfCheck === 'compactRemaining'
+      //       ? compactSpots_total - compactSpots_used
+      //       : typeOfCheck === 'compactTotal'
+      //       ? compactSpots_total
+      //       : typeOfCheck === 'regularUsed'
+      //       ? regularSpots_used
+      //       : typeOfCheck === 'regularRemaing'
+      //       ? regularSpots_total - regularSpots_used
+      //       : typeOfCheck === 'regularTotal'
+      //       ? regularSpots_total
+      //       : typeOfCheck === 'allRemaining'
+      //       ? spacesCheck('regularRemaining') +
+      //         spacesCheck('compactRemaining') +
+      //         spacesCheck('motorcycleRemaining')
+      //       : typeOfCheck === 'totalSpots'
+      //       ? compactSpots_total + regularSpots_total + motorcycleSpots_total
+      //       : typeOfCheck === 'totalSpotsUsed'
+      //       ? compactSpots_used + regularSpots_used + motorcycleSpots_used
+      //       : typeOfCheck === 'full'
+      //       ? spacesCheck('totalSpots') === spacesCheck('totalSpotsUsed')
+      //       : typeOfCheck === 'empty'
+      //       ? motorcycleSpots_used === 0 &&
+      //         compactSpots_used === 0 &&
+      //         regularSpots_used === 0
+      //       : typeOfCheck === 'carFull'
+      //       ? spacesCheck('compactRemaining') === 0 &&
+      //         spacesCheck('regularRemaining') === 0
+      //       : typeOfCheck === 'regularRemaining'
+      //       ? regularSpots_total - regularSpots_used
+      //       : 'dont have this search method in file';
+      //   },
+      //   park(vehicle) {
+      //     let {
+      //       motorcycleSpots_total,
+      //       motorcycleSpots_used,
+      //       compactSpots_total,
+      //       compactSpots_used,
+      //       regularSpots_total,
+      //       regularSpots_used,
+      //       total_vans_onsite
+      //     } = this;
+
+      //     if (vehicle === 'car') {
+      //       if (compactSpots_total > compactSpots_used) {
+      //         parkingLot['compactSpots_used']++;
+      //         return 'car parked in compact spot';
+      //       } else if (regularSpots_total > regularSpots_used) {
+      //         parkingLot['regularSpots_used']++;
+      //         return 'car parked in reg spot';
+      //       } else {
+      //         return 'No more space for cars! Turned away a car.';
+      //       }
+      //     } else if (vehicle === 'motorcycle') {
+      //       if (motorcycleSpots_total > motorcycleSpots_used) {
+      //         parkingLot['motorcycleSpots_used']++;
+      //         return 'motorcycle parked in motorcycle spot';
+      //       } else if (regularSpots_total > regularSpots_used) {
+      //         parkingLot['regularSpots_used']++;
+      //         return 'motorcycle parked in reg spot';
+      //       } else if (compactSpots_total > compactSpots_used) {
+      //         parkingLot['compactSpots_used']++;
+      //         return 'motorcycle parked in compact spot';
+      //       } else {
+      //         console.log('Sorry, the parking lot is full.');
+      //       }
+      //     } else if (vehicle === 'van') {
+      //       if (regularSpots_total - regularSpots_used >= 3) {
+      //         parkingLot['regularSpots_used'] += 3;
+      //         return 'van parked in 3 reg spots';
+      //       } else {
+      //         return 'Van turned away, the parking lot is too full.';
+      //       }
+      //     }
+      //   }
+      // };
+
+      // let { spacesCheck } = parkingLot;
+      // console.log('lot state: ', parkingLot);
+      // console.log(parkingLot.park('car'));
+      // console.log(parkingLot.park('motorcycle'));
+      // console.log(parkingLot.park('van'));
+      // console.log(parkingLot.park('car'));
+      // console.log(parkingLot.park('car'));
+      // console.log(parkingLot.park('motorcycle'));
+      // console.log(parkingLot.park('van'));
+      // console.log('lot state: ', parkingLot);
+      // console.log(
+      //   'remaining moto capacity: ',
+      //   spacesCheck('motorcycleRemaining')
+      // );
+      // console.log('remaining van capacity: ', spacesCheck('vanCapacity'));
+      // console.log('are van Spaces full?: ', spacesCheck('vanFull'));
+      // console.log(
+      //   'how many spaces are vans using up?: ',
+      //   spacesCheck('vanSpacesUsed')
+      // );
+      // console.log('remaining car capacity: ', spacesCheck('carCapacity'));
+      // console.log('moto spaces avail: ', spacesCheck('motoCapacity'));
+      // console.log('compact spaces used: ', spacesCheck('compactUsed'));
+      // console.log('compact spaces avail: ', spacesCheck('compactRemaining'));
+      // console.log('compact spaces total: ', spacesCheck('compactTotal'));
+      // console.log('regular spaces used: ', spacesCheck('regularUsed'));
+      // console.log('regular spaces avail: ', spacesCheck('regularRemaing'));
+      // console.log('regular spaces total: ', spacesCheck('regularTotal'));
+      // console.log('all spaces remaining : ', spacesCheck('allRemaining'));
+      // console.log('total spaces in lot: ', spacesCheck('totalSpots'));
+      // console.log('total spaces used ', spacesCheck('totalSpotsUsed'));
+      // console.log('is Lot full: ', spacesCheck('full'));
+      // console.log('is Lot empty?: ', spacesCheck('empty'));
+      // console.log('are car Spaces full?: ', spacesCheck('carFull'));
+
+      //
+      // Goals:
+      // Design a parking lot using object-oriented principles
+
+      // Here are a few methods that you should be able to run:
+      // TODO - Tell us how many spots are remaining
+      // TODO - Tell us how many total spots are in the parking lot
+      // TODO - Tell us when the parking lot is full
+      // TODO - Tell us when the parking lot is empty
+      // TODO - Tell us when certain spots are full e.g. when all motorcycle spots are taken
+      // TODO - Tell us how many spots vans are taking up
+
+      // **** Assumptions **** :
+      // TODO - The parking lot can hold motorcycles, cars and vans
+      // TODO - The parking lot has motorcycle spots, car spots and large spots
+      // TODO - A motorcycle can park in any spot
+      // TODO - A car can park in a single compact spot, or a regular spot
+      // TODO - A van can park, but it will take up 3 regular spots
+      // TODO - These are just a few assumptions. Feel free to ask your interviewer about more assumptions as needed
+
+      // const _ = require('lodash');
+
+      // var parkingLot = {
+      //   spots: {
+      //     motorcycle: 10,
+      //     compact: 10,
+      //     regular: 10
+      //   },
+      //   used: {
+      //     motorcycle: 7,
+      //     compact: 8,
+      //     regular: 7
+      //   },
+      //   onsite: {
+      //     motorcycle: 7,
+      //     compact: 8,
+      //     vans: 1
+      //   }
+      // };
+
+      // function spacesAvailable(type) {
+      //   const { spots, used } = parkingLot;
+      //   if (type === 'motorcycle') {
+      //     return spots.motorcycle - used.motorcycle;
+      //   } else if (type === 'regular') {
+      //     return spots.regular - used.regular;
+      //   } else if (type === 'compact') {
+      //     return spots.compact - used.compact;
+      //   }
+      // }
+
+      // function park(typeOfVehicle) {
+      //   const { spots, used, onsite } = parkingLot;
+
+      //   if (typeOfVehicle === 'car') {
+      //     // if we have spaces for cars
+      //     if (howManySpaces('car') >= 1) {
+      //       // if spaces in compact area
+      //       if (spacesAvailable('compact') > 0) {
+      //         used['compact']++;
+      //         return 'parked car in compact place ';
+      //       } else if (spacesAvailable('regular') >= 1) {
+      //         // if space only avail in regular space
+      //         used['regular']++;
+      //         return 'parked car in regular space ';
+      //       }
+      //     } else {
+      //       console.log('turning away car');
+      //       return 'turning the car away';
+      //     }
+      //   }
+
+      //   if (typeOfVehicle === 'motorcycle') {
+      //     if (howManySpaces('motorcycle') >= 1) {
+      //       // if spaces in compact area
+      //       if (spacesAvailable('motorcycle') > 0) {
+      //         used['motorcycle']++;
+      //         return 'parked moto in moto spot ';
+      //       } else if (spacesAvailable('compact') > 0) {
+      //         used['compact']++;
+      //         return 'parked moto in compact spot ';
+      //       } else if (spacesAvailable('regular') >= 1) {
+      //         // if space only avail in regular space
+      //         used['regular']++;
+      //         return 'parked  moto in regular space ';
+      //       }
+      //     } else {
+      //       return 'turning the moto away';
+      //     }
+      //   }
+
+      //   if (typeOfVehicle === 'van') {
+      //     if (howManySpaces('van') >= 1) {
+      //       // if space only avail in regular space
+      //       used['regular'] == used['regular'] + 3;
+      //       onsite['vans']++;
+      //       return 'parked  van in 3 regular spaces ';
+      //     } else {
+      //       return 'turning the van away';
+      //     }
+      //   }
+      // }
+
+      // function howManyVanSpaces() {
+      //   used
+      // }
+
+      // function spacesFull(typeOfVehicle) {
+      //   if (typeOfVehicle === 'motorcycle') {
+      //   } else if (typeOfVehicle === 'van') {
+      //   } else if (typeOfVehicle === 'car') {
+      //   }
+      // }
+
+      // function howManySpaces(type) {
+      //   // determine remaining spaces for each vehicle type
+      //   let { spots, used } = parkingLot;
+      //   if (type === 'motorcycle') {
+      //     return (
+      //       spots.regular -
+      //       used.regular +
+      //       (spots.compact - used.compact) +
+      //       (spots.motorcycle - used.motorcycle)
+      //     );
+      //   } else if (type === 'van') {
+      //     console.log(
+      //       'Math.floor(spots.regular / 3)',
+      //       Math.floor(spacesAvailable('regular') / 3)
+      //     );
+      //     return Math.floor(spacesAvailable('regular') / 3);
+      //   } else if (type === 'car') {
+      //     return spacesAvailable('compact') + spacesAvailable('regular');
+      //   }
+      // }
+
+      // function isLotFull() {}
+
+      // function isLotEmpty() {}
+
+      // function totalSpacesInLot() {}
+
+      // function howManySpacesRemain(total) {}
+
+      // console.log('so we have our own parking lot!! => ', parkingLot);
+      // console.log('remaining moto capacity: ', howManySpaces('motorcycle'));
+      // console.log('remaining van capacity: ', howManySpaces('van'));
+      // console.log('remaining car capacity: ', howManySpaces('car'));
+      // console.log('moto spaces avail: ', spacesAvailable('motorcycle'));
+      // console.log('compact spaces avail: ', spacesAvailable('compact'));
+      // console.log('regular spaces avail: ', spacesAvailable('regular'));
+      // console.log('all spaces remaining : ', howManySpacesRemain());
+      // console.log('total spaces in lot: ', totalSpacesInLot());
+      // console.log('is Lot full: ', isLotFull());
+      // console.log('is Lot empty?: ', isLotEmpty());
+      // console.log('are Moto Spaces full?: ', spacesFull('motorcycle'));
+      // console.log('are van Spaces full?: ', spacesFull('van'));
+      // console.log('are car Spaces full?: ', spacesFull('car'));
+      // console.log('Test: park a motorcycle:', park('motorcycle'));
+      // console.log('Test: park a van:', park('van'));
+      // console.log('Test: park a car:', park('car'));
+      // console.log('Test: park a car:', park('car'));
+      // console.log('Test: park a car:', park('car'));
+      // console.log('Test: park a moto:', park('motorcycle'));
+      // console.log('Test: park a moto:', park('motorcycle'));
+      // console.log('Test: park a moto:', park('motorcycle'));
+      // console.log('Test: park a moto:', park('motorcycle'));
+      // console.log('How many spaces are vans taking up? ', howManyVanSpaces());
+
+      // Hey candidate! Welcome to your interview. Boilerplate is provided. Feel free to change the code as you see fit. To run the code at any time, please hit the run button located in the top left corner.
+
+      // Goals:
+      //   Design a parking lot using object-oriented principles
+
+      //   Here are a few methods that you should be able to run:
+      // X - Tell us how many spots are remaining
+      // X- Tell us how many total spots are in the parking lot
+      // X - Tell us when the parking lot is full
+      // X - Tell us when the parking lot is empty
+      // X - Tell us when certain spots are full e.g. when all motorcycle spots are taken
+      // X TODO- Tell us how many spots vans are taking up
+
+      // Assumptions:
+      // X - The parking lot can hold motorcycles, cars and vans
+      // X - The parking lot has motorcycle spots, car spots and large spots
+      // X - A motorcycle can park in any spot
+      // X - A car can park in a single compact spot, or a regular spot
+      // X - A van can park, but it will take up 3 regular spots
+      // X - These are just a few assumptions. Feel free to ask your interviewer about more assumptions as needed
+
+      // const _ = require('lodash');
+
+      // var parkingLot = {
+      //   motorcycleSpots_total: 10,
+      //   motorcycleSpots_used: 7,
+      //   compactSpots_total: 10,
+      //   compactSpots_used: 8,
+      //   regularSpots_total: 10,
+      //   regularSpots_used: 7,
+      //   total_vans_onsite: 1
+      // };
+
+      // function park(typeOfVehicle) {
+      //   let {
+      //     compactSpots_total,
+      //     compactSpots_used,
+      //     regularSpots_total,
+      //     regularSpots_used,
+      //     motorcycleSpots_total,
+      //     motorcycleSpots_used
+      //   } = parkingLot;
+
+      //   let remainingRegSpots = regularSpots_total - regularSpots_used;
+      //   let remainingCompSpots = compactSpots_total - compactSpots_used;
+      //   let remainingMotoSpots = motorcycleSpots_total - motorcycleSpots_used;
+
+      //   if (typeOfVehicle === 'car') {
+      //     // if there are no compatible spaces return
+      //     if (howManySpaces('car') >= 1) {
+      //       //  check which spot to put it in
+      //       if (remainingRegSpots > 0) {
+      //         parkingLot['regularSpots_used']++;
+      //         return 'parked a car in a regular spot';
+      //       } else if (remainingCompSpots > 0) {
+      //         parkingLot['compactSpots_used']++;
+      //         return 'parked in compact spot ';
+      //       }
+      //     } else {
+      //       return 'No more spaces, cant park';
+      //     }
+      //   }
+
+      //   if (typeOfVehicle === 'motorcycle') {
+      //     if (remainingMotoSpots >= 1) {
+      //       parkingLot['motorcycleSpots_used']++;
+      //       return 'parked a moto in a moto spot';
+      //     } else if (remainingCompSpots >= 1) {
+      //       parkingLot['compactSpots_used']++;
+      //       return 'parked a moto in a compact spot';
+      //     } else if (remainingRegSpots >= 1) {
+      //       parkingLot['regularSpots_used']++;
+      //       return 'parked a moto in a reg spot';
+      //     } else {
+      //       return 'turned away a moto, were full up';
+      //     }
+      //   }
+
+      //   if (typeOfVehicle === 'van') {
+      //     // if there are no compatible spaces return
+      //     if (howManySpaces('van') >= 1) {
+      //       //  check which spot to put it in
+      //       parkingLot['regularSpots_used'] =
+      //         parkingLot['regularSpots_used'] + 3;
+      //       parkingLot['total_vans_onsite']++;
+      //       console.log(
+      //         'total reg spots used: ',
+      //         parkingLot['regularSpots_used']
+      //       );
+      //       return 'parked a van in 3 regular spots';
+      //     } else {
+      //       return 'Turned away A Van, no space for that big beast';
+      //     }
+      //   }
+      // }
+
+      // function howManyVanSpaces() {
+      //   return parkingLot['total_vans_onsite'] * 3;
+      // }
+
+      // function spacesFull(typeOfVehicle) {
+      //   // are all spaces full based on type, allowed String : motorcycle, car, van
+      //   // - Tell us when certain spots are full e.g. when all motorcycle spots are taken
+
+      //   let {
+      //     compactSpots_total,
+      //     compactSpots_used,
+      //     regularSpots_total,
+      //     regularSpots_used,
+      //     motorcycleSpots_total,
+      //     motorcycleSpots_used
+      //   } = parkingLot;
+
+      //   if (typeOfVehicle === 'motorcycle') {
+      //     if (
+      //       compactSpots_used === compactSpots_total &&
+      //       regularSpots_total === regularSpots_used &&
+      //       motorcycleSpots_total === motorcycleSpots_used
+      //     )
+      //       return true;
+      //     else return false;
+      //   } else if (typeOfVehicle === 'van') {
+      //     // van can take up 3 reg spots only
+      //     if (regularSpots_total - regularSpots_used > 2) {
+      //       return false;
+      //     } else return true;
+      //   } else if (typeOfVehicle === 'car') {
+      //     let {
+      //       compactSpots_total,
+      //       compactSpots_used,
+      //       regularSpots_total,
+      //       regularSpots_used,
+      //       motorcycleSpots_total,
+      //       motorcycleSpots_used
+      //     } = parkingLot;
+
+      //     let regSpots = regularSpots_total - regularSpots_used;
+      //     let compactSpots = compactSpots_total - compactSpots_used;
+      //     if (regSpots > 1 || compactSpots > 1) return false;
+      //     else return true;
+      //   }
+      // }
+
+      // function howManySpaces(typeOfVehicle) {
+      //   let {
+      //     compactSpots_total,
+      //     compactSpots_used,
+      //     regularSpots_total,
+      //     regularSpots_used,
+      //     motorcycleSpots_total,
+      //     motorcycleSpots_used
+      //   } = parkingLot;
+
+      //   if (typeOfVehicle === 'motorcycle') {
+      //     return (
+      //       compactSpots_total -
+      //       compactSpots_used +
+      //       (regularSpots_total - regularSpots_used) +
+      //       (motorcycleSpots_total - motorcycleSpots_used)
+      //     );
+      //   } else if (typeOfVehicle === 'van') {
+      //     return Math.floor((regularSpots_total - regularSpots_used) / 3);
+      //   } else if (typeOfVehicle === 'car') {
+      //     return (
+      //       regularSpots_total -
+      //       regularSpots_used +
+      //       (compactSpots_total - compactSpots_used)
+      //     );
+      //   }
+      // }
+
+      // function isLotFull() {
+      //   let {
+      //     compactSpots_total,
+      //     compactSpots_used,
+      //     regularSpots_total,
+      //     regularSpots_used,
+      //     motorcycleSpots_total,
+      //     motorcycleSpots_used
+      //   } = parkingLot;
+      //   if (
+      //     compactSpots_total - compactSpots_used === 0 &&
+      //     regularSpots_total - regularSpots_used === 0 &&
+      //     motorcycleSpots_total - motorcycleSpots_used === 0
+      //   )
+      //     return true;
+      //   else return false;
+      // }
+
+      // function isLotEmpty() {
+      //   let { compactSpots_used, regularSpots_used, motorcycleSpots_used } =
+      //     parkingLot;
+      //   if (regularSpots_used + compactSpots_used + motorcycleSpots_used === 0)
+      //     return true;
+      //   else return false;
+      // }
+
+      // function totalSpacesInLot() {
+      //   // all the spaces
+      //   let { compactSpots_total, regularSpots_total, motorcycleSpots_total } =
+      //     parkingLot;
+      //   return compactSpots_total + regularSpots_total + motorcycleSpots_total;
+      // }
+
+      // function howManySpacesRemain() {
+      //   // all spaces
+      //   let {
+      //     compactSpots_total,
+      //     compactSpots_used,
+      //     regularSpots_total,
+      //     regularSpots_used,
+      //     motorcycleSpots_total,
+      //     motorcycleSpots_used
+      //   } = parkingLot;
+
+      //   return (
+      //     compactSpots_total -
+      //     compactSpots_used +
+      //     (regularSpots_total = regularSpots_used) +
+      //     (motorcycleSpots_total - motorcycleSpots_used)
+      //   );
+      // }
+      // console.log('so we have our own parking lot!! => ', parkingLot);
+      // console.log('all spaces remaining : ', howManySpacesRemain());
+      // console.log('total spaces in lot: ', totalSpacesInLot());
+      // console.log('is Lot full: ', isLotFull());
+      // console.log('is Lot empty?: ', isLotEmpty());
+      // console.log('are Moto Spaces full?: ', spacesFull('motorcycle'));
+      // console.log('are van Spaces full?: ', spacesFull('van'));
+      // console.log('are car Spaces full?: ', spacesFull('car'));
+      // console.log('remaining spaces for moto: ', howManySpaces('motorcycle'));
+      // console.log('remaining spaces for van: ', howManySpaces('van'));
+      // console.log('remaining spaces for car: ', howManySpaces('car'));
+      // console.log('Test: park a motorcycle:', park('motorcycle'));
+      // console.log('Test: park a van:', park('van'));
+      // console.log('Test: park a car:', park('car'));
+      // console.log('Test: park a car:', park('car'));
+      // console.log('Test: park a car:', park('car'));
+      // console.log(parkingLot);
+
+      // console.log('Test: park a moto:', park('motorcycle'));
+      // console.log('Test: park a moto:', park('motorcycle'));
+      // console.log('Test: park a moto:', park('motorcycle'));
+      // console.log('Test: park a moto:', park('motorcycle'));
+      // console.log('How many spaces are vans taking up? ', howManyVanSpaces());
+      // console.log(parkingLot);
+
+      // function sieveOferatosthenes(number) {
+      //   // return all prime numbers up to
+      //   // the number in the array
+      //   let allNumbers = [];
+      //   for (let a = 0; a <= number; a++) {
+      //     allNumbers.push(true);
+      //   }
+
+      //   allNumbers[0] = false;
+      //   allNumbers[1] = false;
+      //   for (let x = 2; x <= number; x++) {
+
+      //   }
+
+      //   console.log(allNumbers);
+      // }
+      // sieveOferatosthenes(20);
+
+      // function sieveOfEratosthenes(number) {
+      //   // return all prime numbers up to
+      //   // the number in the array
+      //   let allNumbers = [];
+      //   for (let a = 0; a <= number; a++) {
+      //     allNumbers.push(true);
+      //   }
+      //   allNumbers[0] = false;
+      //   allNumbers[1] = false;
+
+      //   // now swap the 2 for a j that moves from 2 and up but not while the multiple is above the number, and starts at 2 so you are catching 2*2 to start, and you should be good.
+
+      //   for (let j = 2; j <= Math.sqrt(number); j++) {
+      //     for (let x = 2; x * j <= number; x++) {
+      //       console.log(
+      //         'checking ',
+      //         j,
+      //         ' * ',
+      //         x,
+      //         ' = ',
+      //         j * x,
+      //         ' and marking nonprime'
+      //       );
+      //       allNumbers[j * x] = false;
+      //     }
+      //   }
+
+      //   console.log(allNumbers);
+
+      //   // for all numbers remaining,
+      // }
+      // sieveOfEratosthenes(20);
+
+      // // ok, so he is literally just marking the first couple numbers false, because they are, and then when he gets to the 3rd number: 2, he is, instead of checking it for prime, knowing it is and that all its multiples are not, making a list of known non prime numbers by multiplying it times itself and the next couple numbers, then repeating, and ignoring anything where he knows it will be out of bounds.
+      // // in this process, rather than testing for prime, he is identifying non prime numbers within a range, and marking them as such, while leaving the default to prime stamped, so if they dont get caught by the false stamp the list ends up correct, in a reverse intuitive, counter intuitive direction.  kinda makes sense to me.  would not have thought of that.  pretty cool
+
+      // function sieveOferatosthenes(number) {
+      //   let primes = [];
+      //   for (var i = 0; i <= number; i++) {
+      //     primes.push(true);
+      //   }
+      //   primeFound = [];
+      //   primes[0] = false;
+      //   primes[1] = false;
+
+      //   for (var i = 2; i <= Math.sqrt(number); i++) {
+      //     for (var j = 2; j * i <= number; j++) {
+      //       primes[i * j] = false;
+      //     }
+      //   }
+
+      //   for (i in primes) {
+      //     console.log(i, ' prime? ', primes[i]);
+      //   }
+      // }
+
+      // sieveOferatosthenes(20);
+
+      // function sieveOferatosthenes(number) {
+      //   // return all prime numbers up to
+      //   // the number in the array
+      //   let primes = [];
+      //   for (var i = 0; i <= number; i++) {
+      //     primes.push(true);
+      //   }
+      //   primeFound = [];
+      //   primes[0] = false;
+      //   primes[1] = false;
+      //   for (var i = 2; i <= Math.sqrt(number); i++) {
+      //     console.log(i, ' prime check: ');
+
+      //     for (var j = 2; j * i <= number; j++) {
+      //       if (i % j !== 0) {
+      //         primes[i * j] = false;
+      //         console.log(
+      //           'primes[i * j] = false => ',
+      //           'primes[',
+      //           i,
+      //           ' * ',
+      //           j,
+      //           ' = ',
+      //           i * j
+      //         );
+      //       }
+      //     }
+
+      //     if (number % i === 0) {
+      //       primes[number] = false;
+      //       // prime is still true
+      //     }
+      //   }
+
+      //   for (i in primes) {
+      //     console.log(i, ' prime? ', primes[i]);
+      //   }
+      // }
+
+      // sieveOferatosthenes(20);
+
+      // function fibbMemo(i, fibb) {
+      //   // index: seek that index of the fibbonacci sequence
+      //   // cache: an array used as memory
+      //   // check to see if the number is in the cache, if it is not, calculate it and then add it.  if it is, use it.
+      //   // radically improve through caching the computing power by making it linear rather than exponential
+      //   console.log(fibb);
+      //   if (i < 3) {
+      //     return 1;
+      //   } else {
+      //     if (!fibb[i - 1])
+      //       fibb[i - 1] = fibbMemo(i - 1, fibb);
+      //     console.log(fibb);
+      //     if (!fibb[i - 2])
+      //       fibb[i - 2] = fibbMemo(i - 2, fibb);
+      //     console.log(fibb);
+      //     let x = fibb[i - 1];
+      //     let y = fibb[i - 2];
+      //     return x + y;
+      //   }
+      // }
+
+      // console.log(fibbonacciMemo(50, { 1: 1, 2: 1, 3: 2 }));
+      // returns 34
+      // function fibbonacci(position) {
+      //   // return a given positions value of the fibbonaci sequence, the fibbonacci sequence is 1,1,2,3,5,8...
+      //   if (position <= 2) return 1;
+      //   else return fibbonacci(position - 1) + fibbonacci(position - 2);
+      // }
+      // console.log(fibbonacci(0)); // returns 34
+
+      // function fibbonacci(position) {
+      //   // return a given positions value of the fibbonaci sequence
+
+      //   const fibb = { 0: 0, 1: 1 };
+      //   for (i = 2; i <= position; i++) {
+      //     fibb[i] = fibb[i - 1] + fibb[i - 2];
+      //   }
+      //   console.log(fibb);
+      //   return console.log(fibb[position]);
+      // }
+      // // fibbonacci(2); // returns 3
+      // fibbonacci(100); // returns 34
+
+      // function fibbonacci(position) {
+      //   // return a given positions value of the fibbonaci sequence
+      //   console.log('target position: ', position);
+      //   const fibb = { 0: 0, 1: 1 };
+      //   for (i = 2; i <= position; i++) {
+      //     fibb[i] = fibb[i - 1] + fibb[i - 2];
+      //   }
+      //   console.log(fibb);
+      //   return console.log(fibb[position]);
+      // }
+      // fibbonacci(19); // returns 3
+      // fibbonacci(9); // returns 34
+
+      // function binarySearch(numberArray, soughtNumber) {
+      //   console.log('init search w: ', numberArray);
+      //   numberArray.sort((a, b) => {
+      //     return a - b;
+      //   });
+      //   let x = Math.floor(numberArray.length / 2);
+      //   let inspectedNumber = numberArray[x];
+      //   if (inspectedNumber === soughtNumber) {
+      //     console.log('found it at position ', x);
+      //     return x;
+      //   }
+      //   if (numberArray.length > 1 && inspectedNumber > soughtNumber)
+      //     numberArray = numberArray.slice(0, x);
+      //   else numberArray = numberArray.slice(-x);
+      //   binarySearch(numberArray, soughtNumber);
+      // }
+      // binarySearch([2, 1, 1, 4, 5, 3, 3, 3, 2, 4, 6, 7, 3], 1);
+
+      // function binarySearch(numberArray, soughtNumber) {
+      //   numberArray.sort((a, b) => {
+      //     return a - b;
+      //   });
+      //   let x = Math.floor(numberArray.length / 2);
+      //   let inspectedNumber = numberArray[x];
+      //   if (inspectedNumber === soughtNumber) {
+      //     return x;
+      //   } else if (numberArray.length > 1) {
+      //     if (inspectedNumber > soughtNumber)
+      //       numberArray = numberArray.slice(0, x);
+      //     else numberArray = numberArray.slice(-x);
+      //     binarySearch(numberArray, soughtNumber);
+      //   }
+      // }
+      // binarySearch([2, 1, 1, 4, 5, 3, 3, 3, 2, 4, 6, 7, 3], 1);
+
+      // function binarySearch(numberArray, key) {
+      //   // generate a binary seach algorithm
+      //   // search for a given value ( key ) inside of a list ( number array )
+      //   // write this as a recursive algorithm.
+      //   numberArray.sort((a, b) => {
+      //     return a - b;
+      //   });
+      //   console.log(numberArray);
+      //   console.log(numberArray.length);
+      //   let x = Math.floor(numberArray.length / 2);
+      //   console.log('searching index: ( x ): ', x);
+      //   if (numberArray[x] == key) {
+      //     console.log('found it at position ', x);
+      //     return x;
+      //   } else if (numberArray.length > 1) {
+      //     console.log('have ', numberArray.length, ' items to search');
+      //     if (numberArray[x] > key) {
+      //       console.log(
+      //         numberArray[x],
+      //         ' (found) # is greater than ',
+      //         key,
+      //         ' ( key )'
+      //       );
+      //       // cut  bigger ones
+      //       console.log('removing elements, before removal: ', numberArray);
+      //       // slice will cut everything except the indicated start, end and in between
+      //       console.log('array length: ', numberArray.length);
+      //       console.log('slice | items to remove: from 0 to x:  ', x);
+      //       numberArray = numberArray.slice(0, x);
+      //       console.log('removing  elements, after removal: ', numberArray);
+
+      //       binarySearch(numberArray, key);
+      //       // cut smaller ones
+      //     } else {
+      //       console.log(numberArray[x], ' is less than ', key);
+      //       // look for a 5, but found a 3, which is smaller, so anything less thatn the 3 is irrelevant.  cut the smaller ones including the 3.  Since the 3 is also not the number we are looking for, everything up to that key can be removed.
+      //       console.log('removing array elements, before: ', numberArray);
+      //       // slice will cut everything except the indicated start, end and in between
+      //       console.log('array length: ', numberArray.length);
+      //       console.log('slice number of items to remove: ', [x + 1]);
+      //       numberArray = numberArray.slice(-x);
+      //       console.log('removing array elements, after: ', numberArray);
+
+      //       binarySearch(numberArray, key);
+      //       // cut smaller ones
+      //     }
+      //   } else {
+      //     console.log(
+      //       'number not found, searched till I had only 1 item, and its not the number, its  ',
+      //       numberArray[x]
+      //     );
+      //   }
+      // }
+      // binarySearch([2, 1, 1, 4, 5, 3, 3, 3, 2, 4, 6, 7, 3], 1);
+
+      // function factorial(number) {
+      //   // calculate every number from the number down to 1 muliplied by themselves
+      //   if (number === 1) {
+      //     return number;
+      //     // base case here ( determine what case would provide the same output as the input)
+      //   } else {
+      //     // main case here
+      //     return number * factorial(number - 1);
+      //   }
+      //   console.log('number: ', number);
+      // }
+      // console.log('factorial: ', factorial(3));
+
+      // goal is to multiply 4 * 3 * 2 * 1 and return sum
+
+      // function factorial(number) {
+      //   // calculate every number from the number down to 1 muliplied by themselves
+      //   if (number === 1) {
+      //     // what is the situation in which  if I take a parameter, I can simply return the same parameter and get the correct output from our function.
+
+      //     return number;
+      //   } else {
+      //     console.log('number:', number, ' * ', number - 1, ' = ');
+      //     return number * factorial(number - 1);
+      //   }
+      //   console.log('number: ', number);
+      // }
+      // console.log('factorial: ', factorial(3));
+      // function twoSum(numberArray, sum) {
+      //   // returns every pair of numbers from 'numberArray' that adds up to the sum
+      //   let valid = [];
+      //   let reviewed = [];
+      //   console.log(numberArray);
+      //   for (i in numberArray) {
+      //     let x = numberArray[i];
+      //     let y = sum - x;
+      //     if (reviewed.indexOf(y) !== -1) {
+      //       valid.push([x, y]);
+      //     }
+      //     reviewed.push(x);
+      //   }
+      //   console.log(valid);
+      // }
+
+      // twoSum([1, 6, 4, 5, 3, 3], 7);
+
+      // function twoSum(numberArray, sum) {
+      //   // returns every pair of numbers from 'numberArray' that adds up to the sum
+      //   console.log(numberArray);
+
+      //   let reviewed = [];
+      //   let validPairs = [];
+      //   // review each
+      //   for (i in numberArray) {
+      //     console.log(numberArray[i]);
+      //     if (reviewed.indexOf(sum - numberArray[i]) !== -1) {
+      //       validPairs.push([sum - numberArray[i], numberArray[i]]);
+      //     }
+      //     reviewed.push(numberArray[i]);
+      //   }
+      //   console.log(validPairs);
+      // }
+
+      // twoSum([1, 6, 4, 5, 3, 3], 7);
+      // function twoSum(numberArray, sum) {
+      //   // returns every pair of numbers from 'numberArray' that adds up to the sum
+
+      //   console.log(numberArray);
+
+      //   let winning = [];
+      //   let reviewed = [];
+      //   for (i in numberArray) {
+      //     let x = numberArray[i];
+      //     let y = sum - x;
+      //     if (reviewed.indexOf(y) !== -1) {
+      //       winning.push([x, y]);
+      //     }
+      //     reviewed.push(x);
+      //   }
+      //   console.log(winning);
+      //   return winning;
+      // }
+
+      // twoSum([1, 6, 4, 5, 3, 3], 7);
+
+      // function twoSum(numberArray, sum) {
+      //   // returns every pair of numbers from 'numberArray' that adds up to the sum
+      //   let winningNumberPairs = [];
+      //   console.log('numberArray: ', numberArray);
+      //   let reviewedHash = [];
+      //   for (numberIndex in numberArray) {
+      //     console.log('number: ', numberArray[numberIndex]);
+      //     console.log('counterpart: ', sum - numberArray[numberIndex]);
+      //     var counterpart = sum - numberArray[numberIndex];
+      //     console.log('test: ', reviewedHash.indexOf(counterpart));
+
+      //     if (reviewedHash.indexOf(counterpart) !== -1) {
+      //       // if the winning counterpart is there ( its not, not there )
+      //       console.log('found a counterpart');
+      //       winningNumberPairs.push([numberArray[numberIndex], counterpart]);
+      //       console.log('winning numbers: ', winningNumberPairs);
+      //     }
+      //     reviewedHash.push(numberArray[numberIndex]);
+
+      //     console.log('reviewed hash: ', reviewedHash);
+      //   }
+      // }
+
+      // twoSum([1, 6, 4, 5, 3, 3], 7);
+      // function twoSum(numArray, sum) {
+      //   // returns every pair of numbers from 'numArray' that adds up to the sum
+      //   let hash = [];
+      //   let pairs = [];
+      //   console.log(numArray);
+      //   for (number in numArray) {
+      //     let currentNumber = numArray[number];
+      //     let counterpart = sum - currentNumber;
+
+      //     // check the hashtable for the counterpart, it wont exist at first, but this will get pushed into there, so if theres a match, the matching number will find it.  Find any counterparts in the hash array, and if you find one, push the pair into the pairs array.
+      //     if (hash.indexOf(counterpart) !== -1) {
+      //       console.log('found a pair ', currentNumber, counterpart);
+      //       pairs.push([currentNumber, counterpart]);
+      //     }
+      //     hash.push(currentNumber);
+      //   }
+      //   console.log('pairs: ', pairs);
+      // }
+
+      // twoSum([1, 6, 4, 5, 3, 3], 7);
+      // function twoSum(numberArray, sum) {
+      //   let pairs = [];
+      //   let hashtable = [];
+      //   console.log('hashtable starting: ', hashtable);
+      //   for (number in numberArray) {
+      //     console.log(' **** iteration #: ', number);
+      //     console.log('winning numbers: ', pairs);
+      //     console.log('hashtable: ', hashtable);
+
+      //     let currentNumber = numberArray[number];
+      //     let counterpart = sum - currentNumber;
+      //     console.log(
+      //       'working index of initial array: ',
+      //       number,
+      //       'contains this number: ',
+      //       currentNumber,
+      //       'so we should look for the counterpart which would be paired with it: ',
+      //       counterpart
+      //     );
+
+      //     // so this formula is doing some things here, its keeping track of what numbers have been checked through a hash table.
+      //     // and its checking each number in the following ways:  1 it checks to see if for a 1 for example, there is a 6 in the hashable, the counterpart for the number.  if it finds one, which it wont initially because its empty, then it will keep track of the winning pair by pumping into the pairs array.  If it does not, it pushes it into a hashtable, presumably so it can be available for checking of other numbers to pair it with.
+      //     // it then goes to the next inded.  Say the 2nd index is a 6.  That 6 needs to pair with a 1.  Since we did run into a 1 prior, it will check the hashtable for it.  If it finds it to not exist it would give an index as a result of -1, so anything other than that means it finds the counterpart.  So here is what happens. It checks for a -1 index in the hashable for the counterpart, it finds that index yay!!  So the hashtable is substituting in this case for the 2nd for loop.
+      //     // anyways it finds it, so it logs the pair.  But guess what:  its not removing that number from the hashtable, because numbers can pair with multiple other numbers.   If each number was to be used only one once we would remove it from the hashtable, but if later in the number set we were to find another 6, it would actually match up with that 1 also and generate another pair, as per the rather vague directions.  so it stays.  And we go to the next number.
+      //     // now the next number is a 4.  That 4 needs a 3 to pair with.  Theres not one in the hashtable, so we push the 4 into the hashtable, because then when we hit the 3 later ( there are 2 of them ), we will take the three, calculate the needed next number ( a 4 ) and check the hashtable for it, then finding the 4, and pushing that pair.
+      //     // it actually works pretty elegantly, this solution, its just explained poorly, which makes the logic for why it is designed this way relatively difficult to learn...
+      //     if (hashtable.indexOf(counterpart) !== -1) {
+      //       // if the number has not be used yet, then go ahead and log this as a win, but push the counterpart you used up into the hashtable so it does not get re used.
+      //       console.log(
+      //         '==> WINNING COMBO, the hashtable does  have the counterpart... which would be a ',
+      //         counterpart,
+      //         ' so pushing these to winning pairs'
+      //       );
+      //       pairs.push([currentNumber, counterpart]);
+      //       console.log('pairs now: ', pairs);
+      //     }
+      //     hashtable.push(currentNumber);
+      //     console.log(
+      //       'just pushed current number into the hash table, not sure why...  ',
+      //       'hashtable: ',
+      //       hashtable
+      //     );
+      //   }
+      //   console.log('pairs returned: ', pairs);
+      //   return pairs;
+      // }
+
+      // twoSum([1, 6, 4, 5, 3, 3], 7);
+
+      // function twoSum(numberArray, sum) {
+      //   const winningNumbers = [];
+      //   console.log('number array', numberArray);
+      //   for (number in numberArray) {
+      //     for (secondNumber in numberArray) {
+      //       if (number === secondNumber) {
+      //       } else {
+      //         let x = numberArray[secondNumber];
+      //         let y = numberArray[number];
+      //         if (x + y === 7) {
+      //           winningNumbers.push([x, y]);
+      //         }
+      //       }
+      //     }
+      //   }
+      //   console.log('return: ', winningNumbers);
+      //   return winningNumbers;
+      // }
+
+      // twoSum([1, 6, 4, 5, 3, 3], 7);
+
+      // ### Mean Median Mode
+
+      // Create a function that gets the mean, median, and mode of the array of numbers inserted.
+
+      // function getMean(array) {
+      //   // A mean is an average
+      //   let x = 0;
+      //   for (let value of array) {
+      //     x += value;
+      //   }
+      //   return x / array.length;
+      // }
+
+      // function getMedian(array) {
+      //   array.sort((a, b) => {
+      //     return a - b;
+      //   });
+
+      //   if (array.length % 2 === 0) {
+      //     let x = Math.floor(array.length / 2);
+      //     let y = x - 1;
+      //     console.log((array[x] + array[y]) / 2);
+      //     return (array[x] + array[y]) / 2;
+      //   } else {
+      //     return array[Math.floor(array.length / 2)];
+      //   }
+      // }
+
+      // function getMode(array) {
+      //   //  The mode is the most frequently occurring number found in a set of numbers, if none are recurring its undefined.  If several occur equally, its multimodal.
+      //   // If its multi modal, return all of the modes in an array
+      //   // TASK - handle the edge case where all items in the array have the same frequency, which would mean there is no mode.
+      //   console.log(array);
+      //   const hash = {};
+      //   for (var value of array) {
+      //     if (!hash[value]) hash[value] = 0;
+      //     hash[value]++;
+      //   }
+
+      //   let maxFrequency = 0;
+      //   let modes = [];
+      //   console.log(hash);
+      //   for (var value in hash) {
+      //     if (hash[value] > maxFrequency) {
+      //       maxFrequency = hash[value];
+      //       modes = [value];
+      //     } else if (hash[value] === maxFrequency) {
+      //       modes.push(value);
+      //     }
+      //   }
+      //   console.log(modes);
+      //   if (Object.keys(hash).length === modes.length) {
+      //     modes = [];
+      //   }
+      //   return modes;
+      // }
+
+      // function meanMedianMode(array) {
+      //   console.log({
+      //     mean: getMean(array),
+      //     median: getMedian(array),
+      //     mode: getMode(array)
+      //   });
+      //   return {
+      //     mean: getMean(array),
+      //     median: getMedian(array),
+      //     mode: getMode(array)
+      //   };
+      // }
+
+      // meanMedianMode([10, 20, 30, 3, 40, 40, 40, 30, 50, 50, 50, 60, 1]);
+
+      // ***** The challenge: Reverse an Array in Place **** //
+      // you cannot use the array reverse method
+      // take in an array as a param
+      // reverse it in place without creating a new one
+      // only can work with existing array
+
+      // ***** Learnings on this Function ***** //
+
+      // ***** Time Complexity Evaluation ***** //
+
+      // function reverseArrayInPlace(array) {
+      //   // ***** task 6 The challenge **** //
+      //   // reverse every letter in each word in the string but not the words order
+      //   // return the new string
+      //   // cannot use the array reverse method
+      //   // console.log(array);
+      //   // for (i = 0; i < array.length / 2; i++) {
+      //   //   console.log(array[i]);
+      //   //   let storage = array[i];
+      //   //   array[i] = array[array.length - 1 - i];
+      //   //   array[array.length - 1 - i] = storage;
+      //   // }
+      //   // console.log(array);
+      // }
+      // reverseArrayInPlace([1, 4, 3, 6, 7, 'apple']);
+
+      // // ***** Learnings on this Function ***** //
+
+      // // ***** Time Complexity Evaluation ***** //
+
+      // // function reverseWords(string) {
+      // //   // reverse these words in place, leave the word order but reverse the letter order of each.
+      // //   let wordArray = string.split(' ');
+      // //   for (word in wordArray) {
+      // //     let wordHolder = '';
+      // //     for (letterIndex in wordArray[word]) {
+      // //       let letter = wordArray[word][letterIndex];
+      // //       wordHolder = letter + wordHolder;
+      // //     }
+      // //     wordArray[word] = wordHolder;
+      // //   }
+      // //   console.log(wordArray.join(' '));
+      // // }
+
+      // reverseWords('this is a string of words');
+
+      // // **** task 5  Loop Challenge ****
+      // let person = { fname: 'Jonathan', 3: 3, lname: 'Haber', arms: 2 };
+      // let array = [10, 20, 30, 40, 50, 60];
+      // array.property = 'hello';
+
+      // // console log the indexes of the array using a for loop, include the property key added as well.
+
+      // for (i in array) {
+      //   console.log(i);
+      // }
+      // // console log the values of the array using a for loop
+
+      // for (i of array) {
+      //   console.log(i);
+      // }
+
+      // // console log the values of the array using a forEach loop
+
+      // array.forEach((arrayValueAtIndex) => {
+      //   console.log(arrayValueAtIndex);
+      // });
+
+      // // console log the values of the person using a for loop
+
+      // for (a in person) {
+      //   console.log(person[a]);
+      // }
+
+      // // console log the property names of the person using a for loop
+
+      // for (a in person) {
+      //   console.log(a);
+      // }
+
+      // #### Task 4 - Ceasar Cypher
+      // will take 2 params, string and number
+      // will return a string with the characters shifted by the number
+
+      // function CeasarCypher(string, number) {
+      //   // shift each character by the number and return it as a string, if the character is out of bounds, wrap around to the beginning of the alphabet or end of the alphabet
+      //   // leave spaces intact
+      //   // handle negative numbers
+
+      //   const validCharacters = 'abcdefghijklmnopqrstuvxyz';
+      //   let lettersArray = string.toLowerCase().split('');
+      //   let cypherMessage = '';
+      //   for (letter of lettersArray) {
+      //     if (letter === ' ') {
+      //       cypherMessage += ' ';
+      //     } else {
+      //       const index = validCharacters.indexOf(letter);
+      //       let newIndex = index + number;
+      //       if (newIndex > 25) newIndex = newIndex - 26;
+      //       if (newIndex < 0) newIndex = newIndex + 26;
+      //       let newLetter = validCharacters[newIndex];
+      //       cypherMessage += newLetter;
+      //     }
+      //   }
+      //   console.log('cypher: ', cypherMessage);
+      // }
+
+      // CeasarCypher('Hello there', 3); // 'khoor'
+
+      // #### task 3 Is palindrome
+      // take a string and see if its the same in the reversed order
+      // disregard characters which are not valid or uppercase/lower case differences
+      // so convert to lower case and remove special characters
+      function isPalindrome(string) {}
+
+      // ##### Task 2 - Harmless Ransom Note
+
+      // write a function called harmlessRansomNote that takes in two parameters, note and magazine
+      // if the words in the magazie are not in the note, return false
+
+      isPalindrome('racecar'); // true
+      // console.log('isPalindrome("racecar") =>', isPalindrome('racecar')); // true
+
+      function harmlessRansomNote(note, magazine) {}
+
+      harmlessRansomNote(
+        'this is a secret note for you from a secret admirer',
+        'public relations between a secret admirer and a secret admirer'
+      ); // true
+
+      // #### TASK_1 - Fizzbuzz
+
+      // write a function called fizzbuzz... whatever number you put into it,
+      // it will console log, unless its divisible by 3,5 or 15, in each of those cases
+      // it will instead console log out ( fizz, buzz, or fizzbuzz)
+      function fizzbuzz(n) {}
+
+      fizzbuzz(10);
+
+      // // ### Mean Median Mode
+
+      // // Create a function that gets the mean, median, and mode of the array of numbers inserted.
+
+      // function getMean(array) {
+      //   // A mean is an average
+      //   let total = 0;
+      //   for (value of array) {
+      //     total += value;
+      //   }
+      //   return total / array.length;
+      // }
+
+      // function getMedian(array) {
+      //   array.sort((a, b) => {
+      //     return a - b;
+      //   });
+      //   // 12 long, even.
+      //   if (array.length % 2 === 0) {
+      //     let firstIndex = Math.floor(array.length / 2);
+      //     let secondIndex = firstIndex - 1;
+      //     return (array[firstIndex] + array[secondIndex]) / 2;
+      //   } else {
+      //     return array[Math.floor(array.length / 2)];
+      //   }
+      // }
+
+      // function getMode(array) {
+      //   const hash = {};
+      //   for (value of array) {
+      //     if (!hash[value]) hash[value] = 0;
+      //     hash[value]++;
+      //   }
+      //   let modes = [];
+      //   let maxFrequency = 0;
+      //   for (frequency in hash) {
+      //     if (hash[frequency] > maxFrequency) {
+      //       maxFrequency = hash[frequency];
+      //       modes = [frequency];
+      //     } else if (maxFrequency === hash[frequency]) {
+      //       modes.push(frequency);
+      //     }
+      //   }
+
+      //   if (Object.keys(hash).length === modes.length) {
+      //     modes = [];
+      //   }
+
+      //   return modes;
+      // }
+
+      // function meanMedianMode(array) {
+      //   return {
+      //     mean: getMean(array),
+      //     median: getMedian(array),
+      //     mode: getMode(array)
+      //   };
+      // }
+
+      // meanMedianMode([10, 30, 40, 40, 40, 30, 50, 50, 50, 60, 1]);
+
+      // ### Mean Median Mode
+
+      // Create a function that gets the mean, median, and mode of the array of numbers inserted.
+
+      // function getMean(array) {
+      //   // A mean is an average
+      //   console.log('** GET MEAN ** ');
+      //   let total = 0;
+      //   for (value of array) {
+      //     total += value;
+      //   }
+      //   console.log('mean: ', total / array.length);
+      //   return total / array.length;
+      // }
+
+      // function getMedian(array) {
+      //   // A median is the middle number in a sorted list, or average of first 2 middle numbers if the list is even in length
+      //   console.log('** GET MEDIAN ** ');
+      //   array.sort((a, b) => {
+      //     return a - b;
+      //   });
+      //   // find the middle | see if even or odd
+      //   if (array.length % 2 !== 0) {
+      //     // its odd
+      //     // get middle
+      //     // if the array has 9 items, we need the 5th, thats index 4.  array.length / 2 gives us 4.5, so we need Math.floor(array.length / 2)
+      //     console.log('median is: ', array[Math.floor(array.length / 2)]);
+      //     return array[Math.floor(array.length / 2)];
+      //   } else {
+      //     // its even
+      //     console.log(array.length);
+      //     // there are 8, so its the middle 2, thats 3 off from the beginning and end.  3 off from the beginning removes index 0, 1 and 2. It starts with index 3.
+      //     let secondRelevantIndex = Math.floor(array.length / 2);
+      //     console.log(
+      //       'median is: ',
+      //       (array[Math.floor(array.length / 2)] +
+      //         array[Math.floor(array.length / 2 - 1)]) /
+      //         2
+      //     );
+      //     return (
+      //       (array[Math.floor(array.length / 2)] +
+      //         array[Math.floor(array.length / 2 - 1)]) /
+      //       2
+      //     );
+      //   }
+      // }
+
+      // function getMode(array) {
+      //   console.log(array);
+      //   let hash = {};
+      //   for (value of array) {
+      //     console.log(value);
+      //     if (!hash[value]) hash[value] = 0;
+      //     hash[value]++;
+      //   }
+      //   console.log('hash: ', hash);
+      //   let maxFrequency = 0;
+      //   let modeArray = [];
+      //   for (var qty in hash) {
+      //     if (hash[qty] > maxFrequency) {
+      //       modeArray = [qty];
+      //       maxFrequency = hash[qty];
+      //       console.log('updated max to ', hash[qty]);
+      //     } else if (hash[qty] === maxFrequency) {
+      //       modeArray.push(qty);
+      //     }
+      //   }
+      //   if (modeArray.length == Object.keys(hash)) {
+      //     modeArray = [];
+      //   }
+      //   return modeArray;
+      // }
+
+      // function meanMedianMode(array) {
+      //   console.log({
+      //     mean: getMean(array),
+      //     median: getMedian(array),
+      //     mode: getMode(array)
+      //   });
+      // return {
+      //   mean: getMean(array),
+      //   median: getMedian(array),
+      //   mode: getMode(array)
+      // };
+      // }
+
+      // meanMedianMode([10, 20, 30, 40, 40, 40, 30, 50, 50, 50, 60, 1]);
+
+      // // ### Mean Median Mode
+
+      // // Create a function that gets the mean, median, and mode of the array of numbers inserted.
+
+      // function getMean(array) {
+      //   // A mean is an average
+      //   console.log('** GET MEAN ** ');
+      //   let total = 0;
+      //   for (value of array) {
+      //     total += value;
+      //   }
+      //   console.log('mean: ', total / array.length);
+      //   return total / array.length;
+      // }
+
+      // function getMedian(array) {
+      //   // A median is the middle number in a sorted list, or average of first 2 middle numbers if the list is even in length
+      //   console.log('** GET MEDIAN ** ');
+      //   array.sort((a, b) => {
+      //     return a - b;
+      //   });
+      //   // find the middle | see if even or odd
+      //   if (array.length % 2 !== 0) {
+      //     // its odd
+      //     // get middle
+      //     // if the array has 9 items, we need the 5th, thats index 4.  array.length / 2 gives us 4.5, so we need Math.floor(array.length / 2)
+      //     console.log('median is: ', array[Math.floor(array.length / 2)]);
+      //     return array[Math.floor(array.length / 2)];
+      //   } else {
+      //     // its even
+      //     console.log(array.length);
+      //     // there are 8, so its the middle 2, thats 3 off from the beginning and end.  3 off from the beginning removes index 0, 1 and 2. It starts with index 3.
+      //     let secondRelevantIndex = Math.floor(array.length / 2);
+      //     console.log(
+      //       'median is: ',
+      //       (array[Math.floor(array.length / 2)] +
+      //         array[Math.floor(array.length / 2 - 1)]) /
+      //         2
+      //     );
+      //     return (
+      //       (array[Math.floor(array.length / 2)] +
+      //         array[Math.floor(array.length / 2 - 1)]) /
+      //       2
+      //     );
+      //   }
+      // }
+
+      // function getMode(array) {
+      //   //  The mode is the most frequently occurring number found in a set of numbers, if none are recurring its undefined.  If several occur equally, its multimodal.
+      //   // If its multi modal, return all of the modes in an array
+
+      //   console.log('** GET MODE **');
+      //   let numbersHash = {};
+      //   for (i of array) {
+      //     if (!numbersHash[i]) {
+      //       numbersHash[i] = 0;
+      //     }
+      //     numbersHash[i]++;
+      //   }
+
+      //   var modeArrayv2 = [];
+
+      //   let biggestOccuranceCount = 0;
+      //   for (value in numbersHash) {
+      //     // if a bigger number is found, delete the array and start over
+      //     if (numbersHash[value] > biggestOccuranceCount) {
+      //       // on bigger number found, set the winning number
+      //       biggestOccuranceCount = numbersHash[value];
+      //       // delete the modes array
+      //       modeArrayv2 = [];
+      //       console.log('modes array deleted: ', modeArrayv2);
+      //       //  then add this one in and continue
+      //     }
+      //     if (numbersHash[value] === biggestOccuranceCount) {
+      //       modeArrayv2.push(value);
+      //     }
+      //   }
+      //   console.log('biggest occurance: ', biggestOccuranceCount);
+      //   // now we know the most commonly occurring number is 2, so find any values that have the value 2 and push into a return array.
+
+      //   console.log('numbersHash: ', numbersHash);
+
+      //   if (biggestOccuranceCount == 0 || biggestOccuranceCount == 1) {
+      //     // nothing occurs more than once, nonmodal
+      //     console.log('no mode determined, nonmodal');
+      //     return 'nonModal, no multi occurances';
+      //   } else if (biggestOccuranceCount > 1) {
+      //     if (modeArrayv2.length == 1) {
+      //       // something appears more than once, but only one thing
+      //       console.log('A single Mode was calculated');
+      //       return modeArrayv2;
+      //     } else if (modeArrayv2.length > 1) {
+      //       // multiple items occur more than once
+      //       console.log('multi modal array, all modes returned');
+
+      //       return modeArrayv2;
+      //     }
+      //   }
+      // }
+
+      // function meanMedianMode(array) {
+      //   // console.log({
+      //   //   mean: getMean(array),
+      //   //   median: getMedian(array),
+      //   //   mode: getMode(array)
+      //   // });
+
+      //   return {
+      //     mean: getMean(array),
+      //     median: getMedian(array),
+      //     mode: getMode(array)
+      //   };
+      // }
+
+      // meanMedianMode([10, 20, 30, 40, 40, 40, 30, 50, 50, 50, 60, 1]);
+
+      // // ### Mean Median Mode
+
+      // // Create a function that gets the mean, median, and mode of the array of numbers inserted.
+
+      // function getMean(array) {
+      //   // A mean is an average
+      //   console.log('** GET MEAN ** ');
+      //   let total = 0;
+      //   for (value of array) {
+      //     total += value;
+      //   }
+      //   console.log('mean: ', total / array.length);
+      //   return total / array.length;
+      // }
+
+      // function getMedian(array) {
+      //   // A median is the middle number in a sorted list, or average of first 2 middle numbers if the list is even in length
+      //   console.log('** GET MEDIAN ** ');
+      //   array.sort((a, b) => {
+      //     return a - b;
+      //   });
+      //   // find the middle | see if even or odd
+      //   if (array.length % 2 !== 0) {
+      //     // its odd
+      //     // get middle
+      //     // if the array has 9 items, we need the 5th, thats index 4.  array.length / 2 gives us 4.5, so we need Math.floor(array.length / 2)
+      //     console.log('median is: ', array[Math.floor(array.length / 2)]);
+      //     return array[Math.floor(array.length / 2)];
+      //   } else {
+      //     // its even
+      //     console.log(array.length);
+      //     // there are 8, so its the middle 2, thats 3 off from the beginning and end.  3 off from the beginning removes index 0, 1 and 2. It starts with index 3.
+      //     let secondRelevantIndex = Math.floor(array.length / 2);
+      //     console.log(
+      //       'median is: ',
+      //       (array[Math.floor(array.length / 2)] +
+      //         array[Math.floor(array.length / 2 - 1)]) /
+      //         2
+      //     );
+      //     return (
+      //       (array[Math.floor(array.length / 2)] +
+      //         array[Math.floor(array.length / 2 - 1)]) /
+      //       2
+      //     );
+      //   }
+      // }
+
+      // function getMode(array) {
+      //   //  The mode is the most frequently occurring number found in a set of numbers, if none are recurring its undefined.  If several occur equally, its multimodal.
+      //   // If its multi modal, return all of the modes in an array
+
+      //   console.log('** GET MODE **');
+      //   let numbersHash = {};
+      //   for (i of array) {
+      //     if (!numbersHash[i]) {
+      //       numbersHash[i] = 0;
+      //     }
+      //     numbersHash[i]++;
+      //   }
+      //   let biggestOccuranceCount = 0;
+      //   for (value in numbersHash) {
+      //     if (numbersHash[value] > biggestOccuranceCount) {
+      //       biggestOccuranceCount = numbersHash[value];
+      //     }
+      //   }
+      //   console.log('biggest occurance: ', biggestOccuranceCount);
+      //   // now we know the most commonly occurring number is 2, so find any values that have the value 2 and push into a return array.
+
+      //   modeArray = [];
+      //   for (value in numbersHash) {
+      //     console.log(numbersHash[value]);
+      //     if (numbersHash[value] === biggestOccuranceCount) {
+      //       modeArray.push(value);
+      //     }
+      //   }
+      //   console.log(modeArray);
+
+      //   console.log('numbersHash: ', numbersHash);
+      //   if (biggestOccuranceCount == 0 || biggestOccuranceCount == 1) {
+      //     console.log('no mode determined, nonmodal');
+      //     return 'nonModal, no multi occurances';
+      //   } else if (biggestOccuranceCount > 1) {
+      //     if (modeArray.length == 1) {
+      //       console.log('A single Mode was calculated');
+      //       return modeArray;
+      //     } else if (modeArray.length > 1) {
+      //       console.log('multi modal array, all modes returned');
+
+      //       return modeArray;
+      //     }
+      //   }
+      // }
+
+      // function meanMedianMode(array) {
+      //   console.log({
+      //     mean: getMean(array),
+      //     median: getMedian(array),
+      //     mode: getMode(array)
+      //   });
+
+      //   // return {
+      //   //   mean: getMean(array),
+      //   //   median: getMedian(array),
+      //   //   mode: getMode(array)
+      //   // };
+      // }
+
+      // meanMedianMode([10, 20, 30, 40, 40, 30, 50, 60, 1]);
+
+      // // **** Loop Challenge ****
+      // let person = { fname: 'Jonathan', 3: 3, lname: 'Haber', arms: 2 };
+      // let array = [10, 20, 30, 40, 50, 60];
+      // array.property = 'hello';
+
+      // // console log the indexes of the array using a for loop, include the property key added as well.
+
+      // for (index in array) {
+      //   console.log(index);
+      // }
+
+      // // console log the values of the array using a for loop
+
+      // for (values of array) {
+      //   console.log(values);
+      // }
+
+      // // console log the values of the array using a forEach loop
+
+      // array.forEach((property) => {
+      //   console.log(property);
+      // });
+
+      // // console log the values of the person using a for loop
+
+      // for (values in person) {
+      //   console.log(person[values]);
+      // }
+
+      // // console log the property names of the person using a for loop
+      // for (index in person) {
+      //   console.log(index);
+      // }
+
+      // **** Loop Challenge ****
+      // let person = { fname: 'Jonathan', 3: 3, lname: 'Haber', arms: 2 };
+      // let array = [10, 20, 30, 40, 50, 60];
+      // array.property = 'hello';
+
+      // // console log the indexes of the array using a for loop, include the property key added as well.
+
+      // for (index in array) {
+      //   console.log(index);
+      // }
+
+      // // console log the values of the array using a for loop
+
+      // for (property of array) {
+      //   console.log(property);
+      // }
+
+      // // console log the values of the array using a forEach loop
+
+      // array.forEach((property) => {
+      //   console.log(property);
+      // });
+
+      // // console log the values of the person using a for loop
+
+      // for (property in person) {
+      //   console.log(person[property]);
+      // }
+
+      // // console log the property names of the person using a for loop
+
+      // for (property in person) {
+      //   console.log(property);
+      // }
+
+      // // **** Loop Challenge ****
+      // let person = { fname: 'Jonathan', 3: 3, lname: 'Haber', arms: 2 };
+      // let array = [10, 20, 30, 40, 50, 60];
+      // array.property = 'hello';
+
+      // // console log the indexes of the array using a for loop, include the property key added as well.
+
+      // for (index in array) {
+      //   console.log('index:', index);
+      // }
+
+      // // console log the values of the array using a for loop
+
+      // for (index in array) {
+      //   console.log(array[index]);
+      // }
+
+      // // console log the values of the array using a forEach loop
+
+      // array.forEach((property) => {
+      //   console.log('property in array:', property);
+      // });
+
+      // // console log the values of the person using a for loop
+
+      // for (index in person) {
+      //   console.log(person[index]);
+      // }
+
+      // // console log the property names of the person using a for loop
+
+      // for (index in person) {
+      //   console.log(index);
+      // }
+
+      // // **** Loop Challenge ****
+      // let person = { fname: 'Jonathan', 3: 3, lname: 'Haber', arms: 2 };
+      // let array = [1, 5, 3, 3, 2, 4, 3];
+      // array.property = 'hello';
+
+      // // console log the indexes of the array using a for loop
+      // for (let i in array) {
+      //   console.log('FOR IN | array item index is:', i);
+      // }
+
+      // // console log the values of the array using a for loop
+
+      // for (let i of array) {
+      //   console.log('FOR OF | array value is:', i);
+      // }
+
+      // // console log the values of the array using a forEach loop
+      // array.forEach((arrayValues) => {
+      //   console.log('FOR EACH | Loop array value is ', arrayValues);
+      // });
+
+      // ### Mean Median Mode
+
+      // Create a function that gets the mean, median, and mode of the array of numbers inserted.
+
+      // function getMean(array) {
+      //   var arrayTotal = 0;
+      //   array.forEach((arrayItem) => {
+      //     arrayTotal += arrayItem;
+      //   });
+
+      //   console.log('mean =>', arrayTotal / array.length);
+      //   return arrayTotal / array.length;
+      // }
+
+      // function getMedian(array) {
+      //   array.sort((a, b) => {
+      //     return a - b;
+      //   });
+      //   var median;
+      //   var medianIndex = array.length / 2;
+      //   if (array.length % 2 == 0) {
+      //     let firstNumber = array[array.length / 2 - 1];
+      //     let secondNumber = array[array.length / 2];
+      //     median = (firstNumber + secondNumber) / 2;
+      //   } else {
+      //     median = array[Math.floor(array.length / 2)];
+      //   }
+      //   return median;
+      // }
+
+      // function getMode(array) {
+      //   console.log('==> Get Mode');
+      //   const orderedList = array.sort((a, b) => {
+      //     return a - b;
+      //   });
+
+      //   const numberHash = {};
+      //   array.forEach((number) => {
+      //     if (!numberHash[number]) {
+      //       numberHash[number] = 0;
+      //     }
+      //     numberHash[number]++;
+      //   });
+      //   console.log('hash created => ', numberHash);
+
+      //   var highestOccurance = 0;
+      //   for (var key in numberHash) {
+      //     if (numberHash[key] > highestOccurance)
+      //       highestOccurance = numberHash[key];
+      //   }
+      //   console.log('mode highest occurance is => ', highestOccurance);
+      //   var modeArray = [];
+
+      //   for (var key in numberHash) {
+      //     if (numberHash[key] === highestOccurance) {
+      //       modeArray.push(parseInt(key));
+      //     }
+      //   }
+      //   console.log('modes are => ', modeArray);
+      //   return modeArray;
+      // }
+
+      // function meanMedianMode(array) {
+      //   console.log({
+      //     mean: getMean(array),
+      //     median: getMedian(array),
+      //     mode: getMode(array)
+      //   });
+      //   return {
+      //     mean: getMean(array),
+      //     median: getMedian(array),
+      //     mode: getMode(array)
+      //   };
+      // }
+
+      // meanMedianMode([6, 2, 3, 3, 4, 5, 6, 10, 30]);
+
+      // // ### Mean Median Mode
+
+      // // Create a function that gets the mean, median, and mode of the array of numbers inserted.
+
+      // function getMean(array) {
+      //   var arrayTotal = 0;
+      //   array.forEach((arrayItem) => {
+      //     arrayTotal = arrayTotal + arrayItem;
+      //   });
+      //   console.log('mean =>', arrayTotal / array.length);
+      //   return arrayTotal / array.length;
+      // }
+
+      // function getMedian(array) {
+      //   let sorted = array.sort((a, b) => {
+      //     return a - b;
+      //   });
+      //   console.log('sorted => ', sorted);
+      //   // get median index
+      //   var medianIndex = array.length / 2;
+      //   // console.log('medianIndex => ', medianIndex);
+      //   // console.log(medianIndex % 1);
+      //   // median is the middle sized item in an array, like when you sort an array, the middle value
+      //   // if there are 2 middle values its the average
+      //   // for an array  of 6 values, you can find out if theres a single middle, by dividing 6 by 2 and checking the remainder.   For 6 values, the remainder is 0, meaning you need to average the 2 indexes in the middle.  for 7 values, there remainder is non zero, so you can hone in on the central index.
+
+      //   // if(medianIndex)
+      //   // if (i % 1 == 0) return arr;
+
+      //   // so first, determine if the array is even or odd, if its odd its simpler because its just the middle number.
+
+      //   if (array.length % 2 == 0) {
+      //     console.log('the array is even, there are 2 numbers to account for ');
+      //     // now here, we need to get the 2 indexes that land in the middle here, so we start by checking the length.
+      //     console.log(array.length / 2);
+      //     // now magically, our length being even, by dividing by 2 we get the index of our first number.
+      //     // its got 8 items, so the 4th item is one of the key numbers.  5th also.  However, 8/2 = 4 but the 4th number does NOT have index 4.  Since index zero exists!!  So we need that number minus 1 for the first index.
+      //     const indexOfFirstKeyNumber = array.length / 2 - 1;
+      //     console.log(indexOfFirstKeyNumber);
+      //     const indexOfSecondKeyNumber = array.length / 2;
+      //     const averageOfEachNumber =
+      //       (indexOfFirstKeyNumber + indexOfSecondKeyNumber) / 2;
+      //     return averageOfEachNumber;
+      //   } else {
+      //     console.log('the array is odd, there is only 1 number to look for');
+      //     // then find the middle index
+      //     // that will be the length, divided by 2
+      //     // console.log(array.length);
+      //     // test array has length 7, so remove 3 from each side to get to the middle.
+      //     // removing 3 from the beginning means were looking for the 4th item.  Since indexs start at 0, that would be the 3rd index.  Calculating the number 3 from the length is a trick, because we need it to match anytime we have an odd index.  The Math.floor function should help us here, it returns the integer largest thats under the input number.
+      //     // console.log(array.length / 2);
+      //     // console.log(Math.floor(array.length / 2));
+      //     // so this works, so we divide the array by 2.  That gives us 3.5, the middle.  But we know that we need to drop 3 of those initial numbers including zero, and go for the 4th, and to target that we need to account for the 0 index and get the index.  So we will do a math floor to round the number down, and that will us the 3rd index.  now, we would normally need to advance 1 to the 4th item, which is the right item, but we also need to subtract 1 to account for the 0 index being the 1st element, so those effects cancel each other out, and we land on the 3, which is the index.  The actual calculation would be (array.length / 2) -1 +1, with the minus 1 accounting for the first index and the plus 1 accounting for the fact that were targeting not the round down but round up index to the number thats just above the split point fraction we land on.
+      //     const indexOfTheMiddle = Math.floor(array.length / 2);
+      //     const median = array[indexOfTheMiddle];
+      //     console.log('median => ', median);
+      //     return median;
+      //   }
+      // }
+
+      // function getMode(array) {
+      //   console.log('==> Get Mode');
+      //   //  The mode is the most frequently occurring number found in a set of numbers, if none are recurring its undefined.  If several occur equally, its multimodal.
+      //   const orderedList = array.sort((a, b) => {
+      //     return a - b;
+      //   });
+      //   console.log('order the list =>', orderedList);
+      //   // order the list
+      //   // check which number is recurring
+      //   // how to do this
+      //   // i could create a hash table, and then identify the most significantly one occurring... that makes the most sense.
+      //   const numberHash = {};
+      //   array.forEach((number) => {
+      //     if (!numberHash[number]) {
+      //       numberHash[number] = 0;
+      //     }
+      //     numberHash[number]++;
+      //   });
+      //   console.log('hash created => ', numberHash);
+      //   // ok now you have a number hash, so now how will you find the highest value?
+      //   const numbersToCheck = Object.keys(numberHash);
+      //   highestOccurance = { key: undefined, value: undefined };
+      //   numbersToCheck.forEach((key) => {
+      //     // check each number, if any occurs more than once, update the highest occurance value.
+
+      //     if (numberHash[key] > 1) {
+      //       // handle the case where there is no defined highest value
+
+      //       // also make sure that it is higher than the one in there.
+      //       // handle the case where the new one is higher than the previous one, so you end with the highest occuring number in the set
+
+      //       // handle if one is bigger than the
+      //       if (
+      //         numberHash[key] > highestOccurance.value ||
+      //         !highestOccurance.value
+      //       ) {
+      //         highestOccurance = {
+      //           value: parseInt(key),
+      //           occurances: numberHash[key]
+      //         };
+      //         console.log('highestOccurance set => ', highestOccurance);
+      //       } else if (numberHash[key] == highestOccurance.value) {
+      //         // handle the case where there are 2 that occur more that once
+      //         console.log('this is multimodal so far');
+      //       }
+      //     }
+      //   });
+      //   console.log(
+      //     'the mode is ',
+      //     parseInt(highestOccurance.value),
+      //     ' it occurs ',
+      //     highestOccurance.occurances,
+      //     ' times. '
+      //   );
+      //   return parseInt(highestOccurance.value);
+      // }
+
+      // function meanMedianMode(array) {
+      //   let x = getMean(array);
+      //   let y = getMedian(array);
+      //   let z = getMode(array);
+      //   console.log('mean => ', x);
+      //   console.log('median => ', y);
+      //   console.log('mode => ', z);
+      //   return x, y, z;
+      // }
+
+      // meanMedianMode([6, 2, 3, 4, 5, 6, 10, 30]);
+
+      // ##### Task 2 - Harmless Ransom Note
+
+      // write a function called harmlessRansomNote that takes in two parameters, note and magazine
+      // if the words in the magazie are not in the note, return false
+      // function harmlessRansomNote(note, magazine) {
+      //   const validCharacters = 'abcdefghijklmnopqrstuvqyz';
+      //   let noteArray = note.split(' ');
+      //   let magazineArray = magazine.split(' ');
+      //   console.log(magazineArray);
+      //   console.log(noteArray);
+      //   let wordHash = {};
+      //   magazineArray.forEach((neededWord) => {
+      //     if (!wordHash[neededWord]) {
+      //       // if the hash does not exist, add it and set to 1
+      //       wordHash[neededWord] = 0;
+      //     }
+      //     wordHash[neededWord]++;
+      //   });
+      //   console.log('hash is ', wordHash);
+      //   // now make the note, if the needed word in the note array is not in the magazine, then it fails.
+
+      //   var canMakeTheNote = true;
+      //   // for as long as the note is not already impossible, continue
+      //   noteArray.forEach((wordNeeded) => {
+      //     if (canMakeTheNote) {
+      //       if (!wordHash[wordNeeded]) {
+      //         // if the word is not available then
+      //         console.log('cant make the note, missing: ', wordNeeded);
+      //         canMakeTheNote = false;
+      //       } else {
+      //         wordHash[wordNeeded]--;
+      //         if (wordHash[wordNeeded] == 0) {
+      //           delete wordHash[wordNeeded];
+      //         }
+      //       }
+      //     }
+      //   });
+      //   console.log('remaining word hash ', wordHash);
+      //   console.log('can we make the note? => ', canMakeTheNote);
+      //   return canMakeTheNote;
+      // }
+
+      // harmlessRansomNote(
+      //   'this is a secret note for you from a secret admirer',
+      //   'public relations between a secret admirer and a secret admirer this is note for you from'
+      // ); // true
+      // #### TASK_1 - Fizzbuzz
+
+      // write a function called fizzbuzz... whatever number you put into it,
+      // it will console log, unless its divisible by 3,5 or 15, in each of those cases
+      // it will instead console log out ( fizz, buzz, or fizzbuzz)
+      // function fizzbuzz(n) {
+      //   for (var i = 1; i <= n; i++) {
+      //     if (i % 15 == 0) {
+      //       console.log('FizzBuzz');
+      //     } else if (i % 3 == 0) {
+      //       console.log('Fizz');
+      //     } else if (i % 5 == 0) {
+      //       console.log('Buzz ');
+      //     } else {
+      //       console.log(i);
+      //     }
+      //   }
+      // }
+
+      // fizzbuzz(15);
+      // enter code here.
+
+      // function fizzbuzz1(n) {
+      //     for (var i = 1; i <= n; i++) {
+      //         if (i % 3 == 0 && i % 5 == 0) {
+      //             console.log("FizzBuzz");
+      //         } else if (i % 3 == 0) {
+      //             console.log("Fizz");
+      //         } else if (i % 5 == 0) {
+      //             console.log("Buzz");
+      //         } else {
+      //             console.log(i);
+      //         }
+      //     }
+      // }
+      // fizzbuzz1(120);
+
+      // #### TASK_1 - Fizzbuzz
+
+      // write a function called fizzbuzz... whatever number you put into it,
+      // it will console log, unless its divisible by 3,5 or 15, in each of those cases
+      // it will instead console log out ( fizz, buzz, or fizzbuzz)
+      // function fizzbuzz(n){
+
+      // }
+
+      // fizzbuzz(10)
+
+      //   #### Practice
+
+      // write a function called fizzbuzz... whatever number you put into it,
+      // it will console log, unless its divisible by 3,5 or 15, in each of those cases
+      // it will instead console log out ( fizz, buzz, or fizzbuzz)
+      //       function fizzbuzz(n) {
+      //         for (a = 1; a <= n; a++) {
+      //           if (a % 15 == 0) {
+      //             console.log('FizzBuzz');
+      //           } else if (a % 5 == 0) {
+      //             // console.log("a % 5 => ", a % 5);
+      //             console.log('Fizz');
+      //           } else if (a % 3 == 0) {
+      //             console.log('Buzz');
+      //           } else {
+      //             console.log(a);
+      //           }
+      //         }
+      //       }
+
+      //       fizzbuzz(30);
+      //
+
+      // ##### Task 2 - Harmless Ransom Note
+
+      // write a function called harmlessRansomNote that takes in two parameters, note and magazine
+
+      // if the words in the magazie are not in the note, return false
+
+      // function harmlessRansomNote(note, magazine) {
+
+      // }
+
+      // harmlessRansomNote("this is a secret note for you from a secret admirer", "public relations between a secret admirer and a secret admirer");    // true
+
+      // ##### PRACTICE for Task 2 - Harmless Ransom Note
+
+      // Commentary on the below function: The time complexity is O(n^2), less than ideal, because it a for loop nested inside a for loop. it can be improved by seperating the two for loops into two separate functions.
+
+      //   function harmlessRansomNote(note, magazine) {
+      //     // get the note words into an array
+      //     var noteWords = note.split(' ');
+      //     console.log(
+      //       'the words we are looking for in the magazine are ' + noteWords
+      //     );
+      //     // get the magazine words into an array
+      //     var magazineWords = magazine.split(' ');
+      //     console.log('the words we have in the magazine are ' + magazineWords);
+
+      //     // loop through the note words and check if they are in the magazine words, if so, remove them from the magazine words
+      //     // start at the first word in the note words array
+      //     for (var i = 0; i < noteWords.length; i++) {
+      //       console.log(
+      //         'checking the magazine words for the word: ',
+      //         noteWords[i]
+      //       );
+      //       // loop through the magazine words
+      //       for (var j = 0; j < magazineWords.length; j++) {
+      //         // if the note word is equal to the magazine word
+      //         if (noteWords[i] == magazineWords[j]) {
+      //           // remove the word from the magazine array
+      //           magazineWords.splice(j, 1);
+      //           // break out of the loop so we don't check the same word twice
+      //           console.log(
+      //             'found the word [ ' +
+      //               noteWords[i] +
+      //               ' ] in the magazine so it was removed from the magazine array and the remaining words in the magazine array are: ' +
+      //               magazineWords
+      //           );
+      //           break;
+      //         } else {
+      //           console.log(
+      //             'we were unable to find the word [ ' +
+      //               noteWords[i] +
+      //               ' ] in the magazine as it only contains these remaining words ' +
+      //               magazineWords
+      //           );
+      //           console.log('False');
+      //           return false;
+      //         }
+      //       }
+      //     }
+      //   }
+
+      //   harmlessRansomNote(
+      //     'this is a secret note for you from a secret admirer',
+      //     'public relations between a secret admirer and a secret admirer'
+      //   ); // true
+
+      // ##### PRACTICE Round 2 for Task 2 - Harmless Ransom Note - improve the functions time complexity to be linear or constant
+
+      // Commentary on the below function: The time complexity is O(n^2), less than ideal, because it a for loop nested inside a for loop. it can be improved by seperating the two for loops into two separate functions.
+
+      // now this function has a linear or constant time complexity
+
+      // function harmlessRansomNote(note, magazine) {
+      //   // get the note words into an array
+      //   var noteWords = note.split(' ');
+      //   console.log('the words we are looking for in the magazine are ');
+      //   console.log(noteWords);
+      //   // get the magazine words into an array
+      //   var magazineWords = magazine.split(' ');
+      //   console.log('the words we have in the magazine are ');
+      //   console.log(magazineWords);
+
+      //   // loop through the note words and check if they are in the magazine words, if so, remove them from the magazine words
+      //   // start at the first word in the note words array
+
+      //   var magazineObj = {};
+
+      //   for (var j = 0; j < magazineWords.length; j++) {
+      //     // add each magazine word to the magazine object
+      //     if (magazineObj[magazineWords[j]]) {
+      //       magazineObj[magazineWords[j]]++;
+      //     } else {
+      //       magazineObj[magazineWords[j]] = 1;
+      //     }
+      //   }
+      //   console.log('now we have created the magazine object => ');
+      //   console.log(magazineObj);
+
+      //   // now, loop through the note words and see if any of them are in the magazine object, if so, decrement the value of the word in the magazine object, and if goes to zero, remove it from the magazine object, then we will know that the note words are in the magazine object or not
+
+      //   for (var i = 0; i < noteWords.length; i++) {
+      //     console.log('ok so look for this work in the magazine object => ');
+      //     console.log(noteWords[i]);
+      //     let hasThisWord = magazineObj.hasOwnProperty(noteWords[i]);
+      //     console.log(hasThisWord);
+      //     if (!hasThisWord) {
+      //       console.log(
+      //         'the word [ ' + noteWords[i] + ' ] is not in the magazine object'
+      //       );
+      //       return false;
+      //     } else {
+      //       console.log(
+      //         'the word [ ' +
+      //           noteWords[i] +
+      //           ' ] is in the magazine object, removing it to account for it'
+      //       );
+      //       console.log('before =>', magazineObj[noteWords[i]]);
+      //       magazineObj[noteWords[i]]--;
+      //       console.log('mid =>', magazineObj[noteWords[i]]);
+      //       if (magazineObj[noteWords[i]] == 0) {
+      //         delete magazineObj[noteWords[i]];
+      //       }
+      //       console.log('after =>', magazineObj[noteWords[i]]);
+
+      //       console.log(
+      //         'the remaining words in the magazine object are => ',
+      //         magazineObj
+      //       );
+      //     }
+      //   }
+
+      //   // todo: check if the magazine object is empty, if so, return true, if not, return false
+
+      //   if (Object.keys(magazineObj).length == 0) {
+      //     console.log(
+      //       'the magazine object is empty so we were able to write the note'
+      //     );
+      //     return true; // true
+      //   } else {
+      //     return false; // false
+      //   }
+      // }
+
+      // harmlessRansomNote(
+      //   'secret note for you from a secret admirer',
+      //   'public relations between a secret admirer and a secret admirer'
+      // ); // true
+
+      // // ##### Task 2 - Harmless Ransom Note // done with O(n) :: Linear time complexity
+      // function harmlessRansomNote(note, magazine) {
+      //   console.log(note);
+      //   const noteArray = note.split(' ');
+      //   console.log(noteArray);
+      //   const magArray = magazine.split(' ');
+      //   console.log(
+      //     'convert magazine items to array done, array is => ',
+      //     magArray
+      //   );
+
+      //   const magazineObject = {};
+      //   console.log(
+      //     'magazine object starting value before build is ',
+      //     magazineObject
+      //   );
+      //   console.log('**** building magazine object hash table *** ');
+      //   for (i = 0; i <= magArray.length; i++) {
+      //     // if the magazine object already has the words, then increment it
+      //     console.log('checking if it already has this one => ', magArray[i]);
+      //     if (magazineObject.hasOwnProperty(magArray[i])) {
+      //       console.log('...it did have it, incrementing');
+      //       magazineObject[magArray[i]]++;
+      //       console.log('...magazineObject is now => ', magazineObject);
+      //     } else {
+      //       console.log('...it didnt, adding it');
+      //       magazineObject[magArray[i]] = 1;
+      //       console.log('...magazineObject is now => ', magazineObject);
+      //     }
+      //   }
+      //   console.log(
+      //     '*** convert magazine array to hash table object done,  object is => ',
+      //     magazineObject
+      //   );
+
+      //   // alright, we created a hashtable, now go ahead and remove them if its in the note array, this will prove impossible if they dont exist, which gives us a fail / return false.
+      //   console.log(
+      //     '*** now creating the ransom note by removing words from the magazine as needed for the note'
+      //   );
+      //   for (j = 0; j <= noteArray.length; j++) {
+      //     // start at the first item in the note array and see if you can find it in the magazine array
+      //     let activeProperty = noteArray[j];
+      //     console.log('... active property is => ', activeProperty);
+      //     if (magazineObject.hasOwnProperty(activeProperty)) {
+      //       // decrement the quantity
+
+      //       console.log('=##=> decrmenting', magazineObject[activeProperty]);
+      //       magazineObject[activeProperty]--;
+      //       console.log('=##=> decremented?', magazineObject[activeProperty]);
+
+      //       if (magazineObject[activeProperty] == 0) {
+      //         console.log('==> thats the last of this word, deleting:  ');
+      //         console.log('removed => ', activeProperty);
+      //         delete magazineObject[activeProperty];
+      //         console.log(
+      //           'result of deletion, ',
+      //           magazineObject[activeProperty]
+      //         );
+      //       }
+      //       console.log(
+      //         'remaining object of options in magazine is => ',
+      //         magazineObject
+      //       );
+      //     } else {
+      //       console.log(
+      //         '===== FAIL ======> the magazine object ',
+      //         magazineObject,
+      //         'does not have this property,[[ ',
+      //         activeProperty,
+      //         ' ]] , so cannot write the ransom note, abandoning effort'
+      //       );
+      //       return false;
+      //     }
+      //   }
+      //   console.log('==============> SUCCESS ');
+      //   return true;
+      // }
+
+      // harmlessRansomNote(
+      //   'a secret for you from a secret admirer',
+      //   'public relations between a secret admirer and a for from you secret admirer'
+      // ); // true
+
+      // ##### Task 2 TEST Practice 3 - Harmless Ransom Note // done with O(n) :: Linear time complexity
+
+      // ##### Task 2 - Harmless Ransom Note
+
+      // write a function called harmlessRansomNote that takes in two parameters, note and magazine
+      // if the words in the magazie are not in the note, return false
+      // function harmlessRansomNote(note, magazine) {
+      //   console.log(note, magazine);
+      //   // to array
+      //   const noteArray = note.split(' ');
+      //   const magazineArray = magazine.split(' ');
+      //   console.log(noteArray, magazineArray);
+      //   // convert magazineArray to hash table for linear time complexity
+      //   const magazineObject = {};
+      //   for (i = 0; i < magazineArray.length; i++) {
+      //     if (magazineObject[magazineArray[i]]) {
+      //       // if the thing already exists
+      //       magazineObject[magazineArray[i]]++;
+      //       // increment it
+      //     } else {
+      //       magazineObject[magazineArray[i]] = 1;
+      //     }
+      //   }
+      //   console.log(magazineObject);
+      //   // check each note item, and remove from magazine object hash as you find them.
+
+      //   for (j = 0; j < noteArray.length; j++) {
+      //     console.log(noteArray[j]);
+      //     if (magazineObject.hasOwnProperty(noteArray[j])) {
+      //       // if it does have it, decrement it
+      //       magazineObject[noteArray[j]]--;
+      //       // if it reaches zero, delete it
+      //       if (magazineObject[noteArray[j]] == 0) {
+      //         delete magazineObject[noteArray[j]];
+      //       }
+      //     } else {
+      //       console.log(
+      //         'FAIL ==> Found a missing word, ==> ',
+      //         noteArray[j],
+      //         ' <== not possible, returning false',
+      //         'failing hash without this word is ',
+      //         magazineObject
+      //       );
+      //       return false;
+      //     }
+      //     console.log(magazineObject);
+      //   }
+      //   console.log('SUCCESS!! ==> Note Written!!');
+      // }
+
+      // harmlessRansomNote(
+      //   'is a secret note for you from a secret admirer',
+      //   'public relations between a secret admirer and a secret admirer is note for you from'
+      // ); // true
+
+      // ##### Task 2 - Harmless Ransom Note = PRACTICE 4
+
+      // write a function called harmlessRansomNote that takes in two parameters, note and magazine
+      // if the words in the magazie are not in the note, return false
+      // function harmlessRansomNote(note, magazine) {
+      //   const noteArray = note.split(' ');
+      //   console.log('number of words in noteArray is ', noteArray.length);
+      //   const magazineArray = magazine.split(' ');
+      //   console.log(
+      //     'number of words in magazineArray is ',
+      //     magazineArray.length
+      //   );
+      //   const magazineHash = {};
+      //   for (i = 0; i < magazineArray.length; i++) {
+      //     if (magazineHash.hasOwnProperty(magazineArray[i])) {
+      //       magazineHash[magazineArray[i]]++;
+      //     } else {
+      //       magazineHash[magazineArray[i]] = 1;
+      //     }
+      //   }
+      //   console.log(magazineHash);
+
+      //   for (j = 0; j < noteArray.length; j++) {
+      //     if (magazineHash.hasOwnProperty(noteArray[j])) {
+      //       magazineHash[noteArray[j]]--;
+      //       if (magazineHash[noteArray[j]] == 0) {
+      //         delete magazineHash[noteArray[j]];
+      //       }
+      //     } else {
+      //       console.log(
+      //         'could not create note, FAIL, missing word: ==> ',
+      //         noteArray[j],
+      //         ' <== hash was ',
+      //         magazineHash
+      //       );
+      //       return false;
+      //     }
+      //   }
+      //   console.log('SUCCESS!! NOTE WRITTEN');
+      // }
+
+      // harmlessRansomNote(
+      //   'this is a secret note for you from a secret admirer test',
+      //   'public relations between a secret admirer and a secret admirer this is note for you from test'
+      // ); // true
+
+      // ##### Task 2 v6 - Harmless Ransom Note
+
+      // write a function called harmlessRansomNote that takes in two parameters, note and magazine
+      // if the words in the magazie are not in the note, return false
+      // function harmlessRansomNote(note, magazine) {
+      //   let noteArray = note.split(' ');
+      //   let magazineArray = magazine.split(' ');
+      //   let magazineHash = {};
+
+      //   magazineArray.forEach((word) => {
+      //     if (!magazineHash[word]) magazineHash[word] = 0;
+      //     magazineHash[word]++;
+      //   });
+
+      //   // now take the note array and for each thing in there, remove things from the mag hash
+
+      //   var validNote = true;
+
+      //   noteArray.forEach((note) => {
+      //     if (validNote) {
+      //       if (!magazineHash[note]) {
+      //         validNote = false;
+      //       } else if (magazineHash[note]) {
+      //         magazineHash[note]--;
+      //         if (magazineHash[note] == 0) {
+      //           delete magazineHash[note];
+      //         }
+      //       }
+      //     }
+
+      //     // if the magazine hash has the item remove it
+      //   });
+
+      //   console.log('Valid Note =>', validNote);
+      //   return validNote;
+      // }
+
+      // harmlessRansomNote(
+      //   'this is a secret note for you from a secret tax admirer',
+      //   'public relations between a secret admirer and a secret admirer this is note for you from'
+      // ); // true
+
+      // ## Is palindrome, write a function that takes in a string and returns true if the string is a palindrome, false if it is not.
+
+      // function isPalindrome(string) {
+      //   let stringArray = string.split('');
+      //   let reversedArray = stringArray.reverse();
+      //   let reversedString = reversedArray.join('');
+      //   if (string == reversedString) {
+      //     return true;
+      //   } else {
+      //     return false;
+      //   }
+      // }
+
+      // let wordToCheck = 'racecar';
+      // isPalindrome(wordToCheck); // true
+      // console.log(
+      //   'isPalindrome(' + wordToCheck + ') =>',
+      //   isPalindrome(wordToCheck)
+      // ); // true
+
+      // #### task 3 Is palindrome
+
+      // not bad but does not account for upper case issue
+      // function isPalindrome(string) {
+      //   return string == string.split('').reverse().join('');
+      // }
+
+      // console.log('isPalindrome("racecar") =>', isPalindrome('racecara')); // true
+
+      // #### task 3 Is palindrome
+
+      // learnings, this was failing because the array.reverse method affects arrays in place so the array must be copied to compelete the task this way.  It now works correctly.  attempt a refactor now.
+
+      // add lower case accounting
+      // function isPalindrome(string) {
+      //   const stringArray = string.toLowerCase().split('');
+      //   console.log(stringArray);
+      //   const validCharacters = 'abcdefghijklmnopqrstuvxyz'.split('');
+      //   console.log(validCharacters);
+
+      //   const cleanedArray = [];
+
+      //   // clean the characters.
+      //   stringArray.forEach((element) => {
+      //     if (validCharacters.indexOf(element) > -1) {
+      //       cleanedArray.push(element);
+      //     }
+      //   });
+
+      //   console.log('cleaned Array ', cleanedArray);
+      //   // reverse the array
+
+      //   const cleanedArrayReversed = [...cleanedArray].reverse();
+
+      //   console.log('reversed cleaned array', cleanedArrayReversed);
+
+      //   const str_reversed = cleanedArrayReversed.join('');
+      //   const str_original = cleanedArray.join('');
+
+      //   console.log('original cleaned string', str_original);
+      //   console.log('reversed cleaned string', str_reversed);
+
+      //   if (str_original == str_reversed) {
+      //     console.log('yes its a palindrome');
+      //     return true;
+      //   } else {
+      //     console.log('not a palindrome');
+      //     return false;
+      //   }
+      // }
+
+      // console.log('=>', isPalindrome(`Madam, I'm adamo`)); // true
+
+      // #### task 3 Is palindrome
+
+      // learnings, this was failing because the array.reverse method affects arrays in place so the array must be copied to compelete the task this way.  It now works correctly.  attempt a refactor now.
+
+      // // add lower case accounting
+      // function isPalindrome(string) {
+      //   // init a var
+      //   var isAPalindrome = true;
+      //   const stringArray = string.toLowerCase().split('');
+      //   const validCharacters = 'abcdefghijklmnopqrstuvxyz'.split('');
+
+      //   const cleanedArray = [];
+
+      //   // clean the characters.
+      //   stringArray.forEach((element) => {
+      //     if (validCharacters.indexOf(element) > -1) {
+      //       cleanedArray.push(element);
+      //     }
+      //   });
+
+      //   const cleanedArrayReversed = [...cleanedArray].reverse();
+
+      //   if (cleanedArray.join('') == cleanedArrayReversed.join('')) return true;
+      //   else return false;
+      // }
+
+      // console.log('Is this a palindrome? =>', isPalindrome(`Madam, I'm adamo`));
+
+      // function isPalindrome(string) {
+      //   console.log(string);
+      //   const validCharacters = 'abcdefghijklmnopqrstuvxyz';
+      //   // check if any of these characters are invalid and remove them.  Use an array to simplify this.
+
+      //   const cleanedArray = [];
+      //   // create an array
+      //   const dirtyArray = string.split('');
+      //   console.log('dirty', dirtyArray);
+      //   dirtyArray.forEach((element) => {
+      //     if (validCharacters.indexOf(element) > -1) {
+      //       cleanedArray.push(element);
+      //     }
+      //   });
+      //   console.log('cleaned', cleanedArray);
+      //   if (cleanedArray.join('') == cleanedArray.reverse().join(''))
+      //     return true;
+      //   else return false;
+      // }
+
+      // // isPalindrome('racecar'); // true
+      // console.log('isPalindrome("racecar") =>', isPalindrome('racecar*a')); // true
+
+      // #### TASK_1 - Fizzbuzz
+
+      // write a function called fizzbuzz... whatever number you put into it,
+      // it will console log, unless its divisible by 3,5 or 15, in each of those cases
+      // it will instead console log out ( fizz, buzz, or fizzbuzz)
+      // function fizzbuzz(n) {
+      //   for (i = 1; i <= n; i++) {
+      //     // its divisible by 3 if you run a modulus ( divide by three and return the remainder ) and get a 0 remainder.
+      //     if (i % 15 == 0) {
+      //       console.log('FizzBuzz');
+      //     }
+      //     if (i % 3 == 0) {
+      //       console.log('Fizz');
+      //     } else if (i % 5 == 0) {
+      //       console.log('Buzz');
+      //     } else {
+      //       console.log(i);
+      //     }
+      //   }
+      // }
+
+      // fizzbuzz(30);
+
+      // ##### Task 2 - Harmless Ransom Note
+
+      // write a function called harmlessRansomNote that takes in two parameters, note and magazine
+      // if the words in the magazie are not in the note, return false
+      // function harmlessRansomNote(note, magazine) {
+      //   const noteArray = note.split(' ');
+      //   const magazineArray = magazine.split(' ');
+      //   const magazineHash = {};
+      //   var noteIsPossible = true;
+      //   magazineArray.forEach((element) => {
+      //     if (!magazineHash[element]) {
+      //       magazineHash[element] = magazineArray[element] = 0;
+      //     }
+      //     magazineHash[element]++;
+      //   });
+      //   noteArray.forEach((element) => {
+      //     if (noteIsPossible) {
+      //       // if element not there
+      //       if (!magazineHash[element]) noteIsPossible = false;
+      //       else {
+      //         magazineHash[element]--;
+      //         if (magazineHash[element] == 0) {
+      //           delete magazineHash[element];
+      //         }
+      //       }
+      //     }
+      //     // if element is there
+
+      //     // if element is zero
+      //   });
+
+      //   console.log('note is possible => ', noteIsPossible);
+
+      //   return noteIsPossible;
+      // }
+
+      // harmlessRansomNote(
+      //   'this is a secret note for you from a secret admirer',
+      //   'public relations between a secret admirer and a secret admirer this is note for you   '
+      // ); // true
+
+      // #### task 3 Is palindrome
+      // take a string and see if its the same in the reversed order
+      // disregard characters which are not valid or uppercase/lower case differences
+      // so convert to lower case and remove special characters
+      // function isPalindrome(string) {
+      //   var isAPalindrome = true;
+      //   console.log(string);
+      //   const dirtyArray = string.split('');
+      //   console.log('dirty', dirtyArray);
+      //   const validChars = 'abcdefghigklmnopqrstuvqyz';
+      //   const cleanArray = [];
+      //   // clean array
+      //   dirtyArray.forEach((element) => {
+      //     if (validChars.indexOf(element) > -1) cleanArray.push(element);
+      //   });
+      //   console.log('cleaned', cleanArray);
+      //   if (cleanArray.join('') == cleanArray.reverse().join('')) return true;
+      //   else return false;
+      // }
+
+      // // isPalindrome('racecar'); // true
+      // console.log('isPalindrome("racecar") =>', isPalindrome('racecar*a')); // true
+
+      // #### Ceasar Cypher
+      // will take 2 params, string and number
+      // will return a string with the characters shifted by the number
+
+      // function CeasarCypher(string, number) {
+      //   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+      //   const stringArray = string.split('');
+      //   const cypherArray = [];
+      //   stringArray.forEach((element) => {
+      //     const index = alphabet.indexOf(element);
+      //     const newIndex = index + number;
+      //     const newChar = alphabet[newIndex];
+      //     cypherArray.push(newChar);
+      //   });
+      //   return cypherArray.join('');
+      // }
+
+      // #### Ceasar Cypher
+      // will take 2 params, string and number
+      // will return a string with the characters shifted by the number
+      // shift each character by the number and return it as a string, if the character is out of bounds, wrap around to the beginning of the alphabet or end of the alphabet
+      // leave spaces intact
+      // function CeasarCypher(string, number) {
+      //   console.log(string);
+      //   const stringArray = string.split('');
+      //   console.log(stringArray);
+      //   const validCharacters =
+      //     'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ '; // this is the alphabet we want to use
+
+      //   // clean array
+      //   const cleanedArray = [];
+
+      //   const cypherArray = [];
+
+      //   stringArray.forEach((element) => {
+      //     if (validCharacters.indexOf(element) > -1) cleanedArray.push(element);
+      //   });
+
+      //   console.log('cleaned', cleanedArray);
+      //   cleanedArray.forEach((element) => {
+      //     if (element == ' ') {
+      //       console.log('space found ');
+      //       cypherArray.push(element);
+      //     } else {
+      //       let newLetterIndex = validCharacters.indexOf(element) + number;
+      //       console.log('new', newLetterIndex);
+      //       if (newLetterIndex > validCharacters.length)
+      //         newLetterIndex = newLetterIndex - 26;
+
+      //       if (newLetterIndex < 0) newLetterIndex = newLetterIndex + 26;
+      //       let newLetter = validCharacters[newLetterIndex];
+      //       cypherArray.push(newLetter);
+      //     }
+      //   });
+      //   console.log('encrypted message, ', cypherArray.join(''));
+      //   return cypherArray.join('');
+      // }
+
+      // CeasarCypher('zoo keeper', 2); // 'khoor'
+
+      // #### Ceasar Cypher
+      // will take 2 params, string and number
+      // will return a string with the characters shifted by the number
+      // shift each character by the number and return it as a string, if the character is out of bounds, wrap around to the beginning of the alphabet or end of the alphabet
+      // leave spaces intact
+      // handle negative numbers
+      // function CeasarCypher(string, number) {
+      //   const stringArray = string.toLowerCase().split('');
+      //   console.log(stringArray);
+      //   const cleanedArray = [];
+      //   const cypherArray = [];
+      //   // clean array of invalid characters
+      //   const letters = 'abcdefghijklmnopqrstuvxyz ';
+      //   stringArray.forEach((element) => {
+      //     if (letters.indexOf(element) >= 0) {
+      //       cleanedArray.push(element);
+      //     }
+      //   });
+      //   console.log('cleaned', cleanedArray);
+
+      //   // shift the indexes
+      //   cleanedArray.forEach((element) => {
+      //     if (element == ' ') {
+      //       cypherArray.push(element);
+      //     } else {
+      //       console.log(element);
+      //       const workingIndex = letters.indexOf(element);
+      //       console.log(workingIndex);
+      //       // change the working index
+      //       var ai = workingIndex + number;
+      //       // handle too far
+      //       // there are 26 letters so 25 valid indexes plus zero, from 0 to 25 in indexes is from first to 26th letter.
+      //       if (ai > 25) ai = ai - 26;
+      //       if (ai < 0) ai = ai + 26;
+      //       cypherArray.push(letters[ai]);
+      //     }
+      //   });
+      //   console.log('cypher', cypherArray);
+      //   console.log(cypherArray.join(''));
+      //   return cypherArray.join('');
+      // }
+
+      // CeasarCypher('hello! Come help us! ', 0); // 'khoor'
+
+      // use string manipulation for ceasar cypher
+
+      // #### Ceasar Cypher
+      // will take 2 params, string and number
+      // will return a string with the characters shifted by the number
+      // shift each character by the number and return it as a string, if the character is out of bounds, wrap around to the beginning of the alphabet or end of the alphabet
+      // leave spaces intact
+      // handle negative numbers
+      // function CeasarCypher(string, number) {
+      //   number = number % 26;
+      //   const lowerCaseString = string.toLowerCase();
+      //   console.log(lowerCaseString);
+      //   const alphabet = 'abcdefghijklmnopqrstuvxyz'.split('');
+      //   var encryptedMessage = '';
+
+      //   for (let i = 0; i < lowerCaseString.length; i++) {
+      //     var currentLetter = lowerCaseString[i];
+      //     // for each thing, change the index
+
+      //     if (currentLetter == ' ') {
+      //       encryptedMessage += currentLetter;
+      //       continue;
+      //     }
+      //     console.log(currentLetter);
+      //     const index = alphabet.indexOf(currentLetter);
+      //     console.log(index);
+      //     let newIndex = index + number;
+      //     if (newIndex > alphabet.length) newIndex = newIndex - 26;
+      //     if (newIndex < 0) newIndex = newIndex + 26;
+      //     if (string[i] === string[i].toUpperCase()) {
+      //       encryptedMessage += alphabet[newIndex].toUpperCase();
+      //     } else {
+      //       encryptedMessage += alphabet[newIndex];
+      //     }
+      //   }
+      //   console.log('encrypted message is ', encryptedMessage);
+      // }
+
+      // CeasarCypher('Hello there', -2500); // 'khoor'
+
+      // function reverseWords(string) {
+      //   // reverse every letter in each word in the string but not the words order
+      //   // return the new string
+      //   // cannot use the array reverse method
+      //   console.log(string);
+      //   let wordArray = string.split(' ');
+      //   console.log(wordArray);
+      //   let reversedWordArray = [];
+      //   console.log(wordArray[0]);
+
+      //   for (j = 0; j < wordArray.length; j++) {
+      //     let newString = '';
+      //     for (i = 0; i < wordArray[j].length; i++) {
+      //       let currentLetter = wordArray[j][i];
+      //       newString = currentLetter + newString;
+      //     }
+      //     reversedWordArray.push(newString);
+      //   }
+      //   const x = reversedWordArray.join(' ');
+      //   console.log(x);
+      //   return x;
+      // }
+
+      // // reverseWords('this is a string of words');
+      // // this function was improved by swapping out a for loop because its just simpler to read
+      // function reverseWords(string) {
+      //   // reverse every letter in each word in the string but not the words order
+      //   // return the new string
+      //   // cannot use the array reverse method
+      //   console.log(string);
+      //   let wordArray = string.split(' ');
+      //   console.log(wordArray);
+      //   let reversedWordArray = [];
+      //   console.log(wordArray[0]);
+
+      //   // this equation has an 0(2) time complexity.
+      //   // O(n2) means this functions complexity is directly proportional to the square of the input size.
+      //   wordArray.forEach((word) => {
+      //     console.log(word);
+      //     let newString = '';
+      //     for (i = 0; i < word.length; i++) {
+      //       let currentLetter = word[i];
+      //       newString = currentLetter + newString;
+      //     }
+      //     reversedWordArray.push(newString);
+      //   });
+
+      //   const x = reversedWordArray.join(' ');
+      //   console.log(x);
+      //   return x;
+      // }
+
+      // reverseWords('this is a string of words');
+
+      // ***** Learnings on this Function *****
+      // NOTE this function was slightly improved by looping through from the last character to the first one, although its not much better than the last.
+
+      // ***** Time Complexity Evaluation *****
+      // this equation has an 0(2) time complexity.
+      // O(n2) means this functions complexity is directly proportional to the square of the input size.
+
+      // ***** The challenge **** //
+      // reverse every letter in each word in the string but not the words order
+      // return the new string
+      // cannot use the array reverse method
+
+      // function reverseWords(string) {
+      //   let wordArray = string.split(' ');
+      //   let reversedWordArray = [];
+
+      //   wordArray.forEach((word) => {
+      //     console.log(word);
+      //     let newString = '';
+      //     // start at the last character, move to the first
+      //     for (i = word.length; i >= 0; i--) {
+      //       newString += word[i];
+      //     }
+      //     reversedWordArray.push(newString);
+      //   });
+      //   return reversedWordArray.join(' ');
+      // }
+      // reverseWords('this is a string of words');
+
+      // ***** The challenge: Reverse an Array in Place **** //
+      // you cannot use the array reverse method
+      // take in an array as a param
+      // reverse it in place without creating a new one
+      // only can work with existing array
+
+      // ***** Learnings on this Function ***** //
+
+      //
+
+      // ***** Time Complexity Evaluation ***** //
+      // this is linear
+      // Linear time complexity O(n) means that the algorithms take proportionally longer to complete as the input grows.
+
+      // function reverseArrayInPlace(array) {
+      //   console.log('starting array is ', array);
+
+      //   for (let i = 0; i < array.length / 2; i++) {
+      //     console.log('so i is ', i);
+      //     console.log('so saving array[i] which is', array[i]);
+      //     const element = array[i];
+      //     array[i] = array[array.length - i - 1];
+      //     console.log(
+      //       'now copying array[array.length - i - 1] which was index ',
+      //       array.length - i - 1,
+      //       'to position of that index => ',
+      //       array[i]
+      //     );
+      //     array[array.length - i - 1] = element;
+      //     console.log(
+      //       'and just copied the saved item to the original position, finished this round so now array is ',
+      //       array
+      //     );
+      //   }
+      // }
+      // reverseArrayInPlace([1, 4, 3, 6, 7, 'apple']);
+
+      // ***** The challenge: Reverse an Array in Place **** //
+      // you cannot use the array reverse method
+      // take in an array as a param
+      // reverse it in place without creating a new one
+      // only can work with existing array
+
+      // ***** Learnings on this Function ***** //
+
+      //
+
+      // ***** Time Complexity Evaluation ***** //
+      // this is linear
+      // Linear time complexity O(n) means that the algorithms take proportionally longer to complete as the input grows.
+
+      // function reverseArrayInPlace(array) {
+      //   console.log('starting array is ', array);
+
+      //   for (let i = 0; i < array.length / 2; i++) {
+      //     console.log('so i is ', i);
+      //     console.log('so saving array[i] which is', array[i]);
+      //     const element = array[i];
+      //     array[i] = array[array.length - i - 1];
+      //     console.log(
+      //       'now copying array[array.length - i - 1] which was index ',
+      //       array.length - i - 1,
+      //       'to position of that index => ',
+      //       array[i]
+      //     );
+      //     array[array.length - i - 1] = element;
+      //     console.log(
+      //       'and just copied the saved item to the original position, finished this round so now array is ',
+      //       array
+      //     );
+      //   }
+      // }
+      // reverseArrayInPlace([1, 4, 3, 6, 7, 'apple']);
+
+      // ***** The challenge: Reverse an Array in Place **** //
+      // you cannot use the array reverse method
+      // take in an array as a param
+      // reverse it in place without creating a new one
+      // only can work with existing array
+
+      // ***** Learnings on this Function ***** //
+
+      // ***** Time Complexity Evaluation ***** //
+
+      // function reverseArrayInPlace(array) {
+      //   for (var i = 0; i < array.length / 2; i++) {
+      //     console.log(array);
+      //     let tempHolder = array[array.length - 1 - i]; // apple
+      //     array[array.length - 1 - i] = array[i];
+      //     array[i] = tempHolder;
+      //     console.log(array);
+      //   }
+      // }
+      // reverseArrayInPlace([1, 4, 3, 6, 7, 'apple']);
+    </script>
+
+    //
+  </head>
+
+  //
+  <body class="stretched"></body>
+  //
+</html>

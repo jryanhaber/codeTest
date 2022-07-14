@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+  <head>
+    <!-- <script type="text/javascript" src="https://livejs.com/live.js"></script> -->
+    <!-- <meta http-equiv="refresh" content="5" /> -->
+
+    <script>
+      function commonString(string1, string2) {
+        for (let a in string1) {
+          let tempTestString = string1[a].substring(0, 2);
+          let tempFindings = 'NO';
+          let stringArray = string1[a].split('');
+          for (let i in stringArray) {
+            if (string2[a].includes(stringArray[i])) tempFindings = 'YES';
+          }
+          console.log(tempFindings);
+        }
+      }
+
+      console.log(commonString(['abcd', 'cd', 'ef'], ['afbc', 'ee', 'ef']));
+    </script>
+
+    //
+  </head>
+
+  //
+  <body class="stretched"></body>
+  //
+</html>

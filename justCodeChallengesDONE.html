@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+  <head>
+    <script>
+      function bubbleSort(array) {
+        // take in an array of numbers, and return that array of numbers sorted
+        // considerations - try to optimize by only sorting the number of times needed
+        // use a bubble up method
+        // consider recursive function options
+        console.log(array);
+
+        return array;
+      }
+      // console.log(bubbleSort([5, 3]));
+      // console.log(bubbleSort([5, 3, 8, 2]));
+      console.log(bubbleSort([5, 3, 8, 2, 1, 4]));
+
+      // Object Destructuring
+      const getUser = () => {
+        return {
+          name2: 'jonathan',
+          address: {
+            country: 'US',
+            fullAddress: {
+              doorNumber: 22
+            }
+          },
+          age2: 42
+        };
+      };
+      const user = getUser();
+      const name2 = user.name;
+      const age2 = user.age;
+      const country = user.address.country;
+      const doorNumber = user.address.fullAddress.doorNumber;
+
+      // Replace the above code with a spread operator assignment.
+
+      console.log(
+        `      User:           ${name2}
+      age:            ${age2}
+      country:        ${country}
+      door number:    ${number}`
+      );
+
+      const addition = addNumbers(numbers[0], numbers[1], numbers[2]);
+      // replace this function with a spread operator
+
+      var spreadOperator = function (arr1, arr2) {
+        // set an array to contain the spreaded elements plus the existing array.
+        console.log();
+        return;
+      };
+      console.log(spreadOperator([1, 2, 3, 4, 5], [6, 7, 8, 9, 10]));
+
+      // Goals:
+      // First pass = Design a parking lot using object-oriented principles
+      // Second pass = Design a parking lot using functional programming principles
+      // Third pass = Design a parking lot using class based javascript principles
+
+      // Here are a few methods that you should be able to run:
+      // TODO - Tell us how many spots are remaining
+      // TODO - Tell us how many total spots are in the parking lot
+      // TODO - Tell us when the parking lot is full
+      // TODO - Tell us when the parking lot is empty
+      // TODO - Tell us when certain spots are full e.g. when all motorcycle spots are taken
+      // TODO - Tell us how many spots vans are taking up
+
+      // **** Assumptions **** :
+      // TODO - The parking lot can hold motorcycles, cars and vans
+      // TODO - The parking lot has motorcycle spots, car spots and large spots
+      // TODO - A motorcycle can park in any spot
+      // TODO - A car can park in a single compact spot, or a regular spot
+      // TODO - A van can park, but it will take up 3 regular spots
+      // TODO - These are just a few assumptions. Feel free to ask your interviewer about more assumptions as needed
+
+      let parkingLot = {
+        motorcycleSpots_total: 10,
+        motorcycleSpots_used: 7,
+        compactSpots_total: 10,
+        compactSpots_used: 8,
+        regularSpots_total: 10,
+        regularSpots_used: 7,
+        total_vans_onsite: 1,
+        spacesCheck(typeOfCheck) {
+          let {
+            motorcycleSpots_total,
+            motorcycleSpots_used,
+            compactSpots_total,
+            compactSpots_used,
+            regularSpots_total,
+            regularSpots_used,
+            total_vans_onsite
+          } = parkingLot;
+          return null; // TODO
+        },
+        park(vehicle) {
+          let {
+            motorcycleSpots_total,
+            motorcycleSpots_used,
+            compactSpots_total,
+            compactSpots_used,
+            regularSpots_total,
+            regularSpots_used,
+            total_vans_onsite
+          } = this;
+
+          if (vehicle === 'car') {
+          } else if (vehicle === 'motorcycle') {
+          } else if (vehicle === 'van') {
+          }
+        }
+      };
+
+      // TESTS
+      let { spacesCheck } = parkingLot;
+      console.log('lot state: ', parkingLot);
+      console.log(parkingLot.park('car'));
+      console.log(parkingLot.park('motorcycle'));
+      console.log(parkingLot.park('van'));
+      console.log(parkingLot.park('car'));
+      console.log(parkingLot.park('car'));
+      console.log(parkingLot.park('motorcycle'));
+      console.log(parkingLot.park('van'));
+      console.log('lot state: ', parkingLot);
+      console.log(' moto capacity: ', spacesCheck('motorcycleRemaining'));
+      console.log('remaining van capacity: ', spacesCheck('vanCapacity'));
+      console.log('van Spaces full?: ', spacesCheck('vanFull'));
+      console.log('spaces vans using up?: ', spacesCheck('vanSpacesUsed'));
+      console.log('remaining car capacity: ', spacesCheck('carCapacity'));
+      console.log('moto spaces avail: ', spacesCheck('motoCapacity'));
+      console.log('compact spaces used: ', spacesCheck('compactUsed'));
+      console.log('compact spaces avail: ', spacesCheck('compactRemaining'));
+      console.log('compact spaces total: ', spacesCheck('compactTotal'));
+      console.log('regular spaces used: ', spacesCheck('regularUsed'));
+      console.log('regular spaces avail: ', spacesCheck('regularRemaing'));
+      console.log('regular spaces total: ', spacesCheck('regularTotal'));
+      console.log('all spaces remaining : ', spacesCheck('allRemaining'));
+      console.log('total spaces in lot: ', spacesCheck('totalSpots'));
+      console.log('total spaces used ', spacesCheck('totalSpotsUsed'));
+      console.log('is Lot full: ', spacesCheck('full'));
+      console.log('is Lot empty?: ', spacesCheck('empty'));
+      console.log('are car Spaces full?: ', spacesCheck('carFull'));
+
+      function sieveOferatosthenes(number) {
+        // return all prime numbers up to
+        // the number in the array
+      }
+      sieveOferatosthenes(20);
+
+      function fibbonacciMemo(index, cache) {
+        //   // return a given positions value of the fibbonaci sequence, the fibbonacci sequence is 1,1,2,3,5,8...
+        // index: seek that index of the fibbonacci sequence
+        // cache: an array used as memory
+        // check to see if the number is in the cache, if it is not, calculate it and then add it.  if it is, use it.
+      }
+      console.log(fibbonacciMemo(3)); //
+
+      function fibbonacci(position) {
+        // return a given positions value of the fibbonaci sequence, the fibbonacci sequence is 1,1,2,3,5,8...
+        // Requirements:  must use recursion
+        // exponential runtime using recursion
+      }
+      console.log(fibbonacci(4)); // returns 3
+      console.log(fibbonacci(9)); // returns 34
+
+      function factorial(number) {
+        // calculate every number from the number down to 1 muliplied by themselves, so for 3 is 3 * 2 * 1 = the factorial
+        if (/* something */ number) {
+          // base case here ( determine what case would provide the same output as the input)
+        } else {
+          // main case here
+        }
+        console.log('number: ', number);
+      }
+      console.log('factorial: ', factorial(3)); // returns 6
+
+      function binarySearch(numberArray, key) {
+        // generate a binary seach algorithm
+        // search for a given value ( key ) inside of a list ( number array )
+        // write this as a recursive algorithm.
+      }
+      binarySearch([2, 1, 1, 4, 5, 3, 3, 3, 2, 4, 6, 7, 3], 5);
+
+      function twoSum(numArray, sum) {
+        // returns every pair of numbers from 'numArray' that adds up to the sum
+      }
+
+      twoSum([1, 6, 4, 5, 3, 3], 7);
+
+      // ### Mean Median Mode
+
+      // Create a function that gets the mean, median, and mode of the array of numbers inserted.
+
+      function getMean(array) {
+        // A mean is an average
+      }
+
+      function getMedian(array) {
+        // A median is the middle number in a sorted list, or average of first 2 middle numbers if the list is even in length
+      }
+
+      function getMode(array) {
+        //  The mode is the most frequently occurring number found in a set of numbers, if none are recurring its undefined.  If several occur equally, its multimodal.
+        // If its multi modal, return all of the modes in an array
+        // TASK - handle the edge case where all items in the array have the same frequency, which would mean there is no mode.
+      }
+
+      function meanMedianMode(array) {
+        console.log({
+          mean: getMean(array),
+          median: getMedian(array),
+          mode: getMode(array)
+        });
+        // return {
+        //   mean: getMean(array),
+        //   median: getMedian(array),
+        //   mode: getMode(array)
+        // };
+      }
+
+      meanMedianMode([10, 20, 30, 40, 40, 40, 30, 50, 50, 50, 60, 1]);
+
+      // ***** The challenge: Reverse an Array in Place **** //
+      // you cannot use the array reverse method
+      // take in an array as a param
+      // reverse it in place without creating a new one
+      // only can work with existing array
+
+      // ***** Learnings on this Function ***** //
+
+      // ***** Time Complexity Evaluation ***** //
+
+      function reverseArrayInPlace() {}
+      reverseArrayInPlace([1, 4, 3, 6, 7, 'apple']);
+
+      // ***** task 6 The challenge **** //
+      // reverse every letter in each word in the string but not the words order
+      // return the new string
+      // cannot use the array reverse method
+
+      // ***** Learnings on this Function ***** //
+
+      // ***** Time Complexity Evaluation ***** //
+
+      function reverseWords(string) {
+        // reverse these words in place, leave the word order but reverse the letter order of each.
+        // console.log(string);
+      }
+
+      reverseWords('this is a string of words');
+
+      // **** task 5  Loop Challenge ****
+      let person = { fname: 'Jonathan', 3: 3, lname: 'Haber', arms: 2 };
+      let array = [10, 20, 30, 40, 50, 60];
+      array.property = 'hello';
+
+      // console log the indexes of the array using a for loop, include the property key added as well.
+
+      // console log the values of the array using a for loop
+
+      // console log the values of the array using a forEach loop
+
+      // console log the values of the person using a for loop
+
+      // console log the property names of the person using a for loop
+
+      // #### Task 4 - Ceasar Cypher
+      // will take 2 params, string and number
+      // will return a string with the characters shifted by the number
+      // shift each character by the number and return it as a string, if the character is out of bounds, wrap around to the beginning of the alphabet or end of the alphabet
+      // leave spaces intact
+      // handle negative numbers
+      function CeasarCypher(string, number) {}
+
+      CeasarCypher('hello', 3); // 'khoor'
+
+      // #### task 3 Is palindrome
+      // take a string and see if its the same in the reversed order
+      // disregard characters which are not valid or uppercase/lower case differences
+      // so convert to lower case and remove special characters
+      function isPalindrome(string) {}
+
+      // ##### Task 2 - Harmless Ransom Note
+
+      // write a function called harmlessRansomNote that takes in two parameters, note and magazine
+      // if the words in the magazie are not in the note, return false
+
+      isPalindrome('racecar'); // true
+      console.log('isPalindrome("racecar") =>', isPalindrome('racecar')); // true
+
+      function harmlessRansomNote(note, magazine) {}
+
+      harmlessRansomNote(
+        'this is a secret note for you from a secret admirer',
+        'public relations between a secret admirer and a secret admirer'
+      ); // true
+
+      // #### TASK_1 - Fizzbuzz
+
+      // write a function called fizzbuzz... whatever number you put into it,
+      // it will console log, unless its divisible by 3,5 or 15, in each of those cases
+      // it will instead console log out ( fizz, buzz, or fizzbuzz)
+      function fizzbuzz(n) {}
+
+      fizzbuzz(10);
+    </script>
+    //
+  </head>
+
+  //
+  <body class="stretched">
+    // test //
+  </body>
+  //
+</html>
